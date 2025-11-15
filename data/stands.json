@@ -1,0 +1,272 @@
+[
+  {
+    "name": "SPAR Markt Michaela Frohnwieser",
+    "address": "Unterlinden 27, 6922 Wolfurt",
+    "coordinates": {
+      "lat": 47.472987,
+      "lng": 9.750075
+    },
+    "daysOfWeek": [1]
+  },
+  {
+    "name": "SPAR Zirovnik Daniel",
+    "address": "Hofsteigstraße 2, 6971 Hard",
+    "coordinates": {
+      "lat": 47.4897,
+      "lng": 9.69072
+    },
+    "daysOfWeek": [2]
+  },
+  {
+    "name": "SPAR Albrecht",
+    "address": "Hofsteigstraße 50, 6858 Schwarzach",
+    "coordinates": {
+      "lat": 47.447384,
+      "lng": 9.763415
+    },
+    "daysOfWeek": [2]
+  },
+  {
+    "name": "SPAR Supermarkt Hörbranz",
+    "address": "Ziegelbachstraße 4, 6912 Hörbranz",
+    "coordinates": {
+      "lat": 47.554233,
+      "lng": 9.749975
+    },
+    "daysOfWeek": [2]
+  },
+  {
+    "name": "SPAR Achleitner",
+    "address": "Landstraße 77, 6971 Hard",
+    "coordinates": {
+      "lat": 47.481131,
+      "lng": 9.683404
+    },
+    "daysOfWeek": [3]
+  },
+  {
+    "name": "EUROSPAR Bregenz-Vorkloster",
+    "address": "Mariahilfstraße 2, 6900 Bregenz",
+    "coordinates": {
+      "lat": 47.499125,
+      "lng": 9.732488
+    },
+    "daysOfWeek": [3, 4, 6]
+  },
+  {
+    "name": "SPAR Markus Greber",
+    "address": "Loco 910, 6863 Egg",
+    "coordinates": {
+      "lat": 47.430856,
+      "lng": 9.897181
+    },
+    "daysOfWeek": [3]
+  },
+  {
+    "name": "SPAR Supermarkt Fußach",
+    "address": "Bundesstraße 80, 6972 Fußach",
+    "coordinates": {
+      "lat": 47.460333,
+      "lng": 9.645735
+    },
+    "daysOfWeek": [5]
+  },
+  {
+    "name": "EUROSPAR & Bistro Bregenz-Kronhalde",
+    "address": "Kennelbacherstraße 1, 6900 Bregenz",
+    "coordinates": {
+      "lat": 47.492449,
+      "lng": 9.742566
+    },
+    "daysOfWeek": [5]
+  },
+  {
+    "name": "SPAR Supermarkt Lauterach",
+    "address": "Bundesstraße 41, 6923 Lauterach",
+    "coordinates": {
+      "lat": 47.479035,
+      "lng": 9.732278
+    },
+    "daysOfWeek": [5]
+  },
+  {
+    "name": "SPAR Supermarkt Lochau",
+    "address": "Alberlochstraße 30, 6911 Lochau",
+    "coordinates": {
+      "lat": 47.534535,
+      "lng": 9.745979
+    },
+    "daysOfWeek": [5]
+  },
+  {
+    "name": "ADEG Berlinger",
+    "address": "Ellenbogen 607, 6870 Bezau",
+    "coordinates": {
+      "lat": 47.378031,
+      "lng": 9.890775
+    },
+    "daysOfWeek": [6]
+  },
+  {
+    "name": "Bauhaus/Lidl Bregenz",
+    "address": "Bahnhofstraße 53, 6900 Bregenz",
+    "coordinates": {
+      "lat": 47.501118,
+      "lng": 9.737331
+    },
+    "daysOfWeek": [6]
+  },
+  {
+    "name": "SPAR Supermarkt Dornbirn-Rohrbach",
+    "address": "Rohrbach 59, 6850 Dornbirn",
+    "coordinates": {
+      "lat": 47.423861,
+      "lng": 9.728884
+    },
+    "daysOfWeek": [3]
+  },
+  {
+    "name": "SPAR Johannes König",
+    "address": "Hohenemser Straße 3a, 6890 Lustenau",
+    "coordinates": {
+      "lat": 47.418364,
+      "lng": 9.661423
+    },
+    "daysOfWeek": [3, 6]
+  },
+  {
+    "name": "SPAR Roland Feurstein",
+    "address": "Reichsstraße 48b, 6890 Lustenau",
+    "coordinates": {
+      "lat": 47.434566,
+      "lng": 9.652142
+    },
+    "daysOfWeek": [4]
+  },
+  {
+    "name": "EUROSPAR Hohenems-Zentrum",
+    "address": "!!! DERZEIT GESCHLOSSEN !!!",
+    "coordinates": {
+      "lat": 47.36275,
+      "lng": 9.685284
+    },
+    "daysOfWeek": [4]
+  },
+  {
+    "name": "SPAR Supermarkt Dornbirn-Fischbach",
+    "address": "Dr.-Anton-Schneiderstraße 15b, 6850 Dornbirn",
+    "coordinates": {
+      "lat": 47.423827,
+      "lng": 9.749314
+    },
+    "daysOfWeek": [5]
+  },
+  {
+    "name": "EUROSPAR Dornbirn-Schwefel",
+    "address": "Schwefel 70, 6850 Dornbirn",
+    "coordinates": {
+      "lat": 47.429471,
+      "lng": 9.741038
+    },
+    "daysOfWeek": [6]
+  },
+  {
+    "name": "EUROSPAR Dornbirn-Sägercenter",
+    "address": "Marktstraße 67, 6850 Dornbirn",
+    "coordinates": {
+      "lat": 47.407749,
+      "lng": 9.742192
+    },
+    "daysOfWeek": [6]
+  },
+  {
+    "name": "BILLA Feldkirch",
+    "address": "Reichstraße 167, 6800 Feldkirch",
+    "coordinates": {
+      "lat": 47.242377,
+      "lng": 9.604036
+    },
+    "daysOfWeek": [1, 2, 3, 4, 5, 6]
+  },
+  {
+    "name": "SPAR Supermarkt Altach-Lastenstraße",
+    "address": "Feldkircherstraße 9, 6844 Altach",
+    "coordinates": {
+      "lat": 47.348427,
+      "lng": 9.639079
+    },
+    "daysOfWeek": [2]
+  },
+  {
+    "name": "SPAR Supermarkt Sulz",
+    "address": "Muesinenstraße 42, 6832 Sulz",
+    "coordinates": {
+      "lat": 47.285208,
+      "lng": 9.651208
+    },
+    "daysOfWeek": [4]
+  },
+  {
+    "name": "EUROSPAR Frastanz",
+    "address": "Bahnhofstraße 44, 6820 Frastanz",
+    "coordinates": {
+      "lat": 47.217791,
+      "lng": 9.635668
+    },
+    "daysOfWeek": [5]
+  },
+  {
+    "name": "EUROSPAR & Bistro Feldkirch-Hämmerle-Center",
+    "address": "Hämmerlestraße 24, 6800 Feldkirch",
+    "coordinates": {
+      "lat": 47.248393,
+      "lng": 9.587497
+    },
+    "daysOfWeek": [6]
+  },
+  {
+    "name": "MERKUR Markt Rankweil",
+    "address": "Bundesstraße 22, 6830 Rankweil",
+    "coordinates": {
+      "lat": 47.273022,
+      "lng": 9.616208
+    },
+    "daysOfWeek": [6]
+  },
+  {
+    "name": "SPAR Supermarkt Bludenz - Alte Landstraße",
+    "address": "Alte Landstraße 62, 6700 Bludenz",
+    "coordinates": {
+      "lat": 47.163653,
+      "lng": 9.810466
+    },
+    "daysOfWeek": [1, 2, 4]
+  },
+  {
+    "name": "EUROSPAR & Bistro Bludenz - Schmittenstraße",
+    "address": "!!! DERZEIT GESCHLOSSEN !!!",
+    "coordinates": {
+      "lat": 47.151407,
+      "lng": 9.825509
+    },
+    "daysOfWeek": [3]
+  },
+  {
+    "name": "SPAR Supermarkt Nenzing",
+    "address": "Bundesstraße 90, 6710 Nenzing",
+    "coordinates": {
+      "lat": 47.187665,
+      "lng": 9.709545
+    },
+    "daysOfWeek": [4]
+  },
+  {
+    "name": "SPAR Supermarkt Nüziders",
+    "address": "Kirchstraße 13, 6714 Nüziders",
+    "coordinates": {
+      "lat": 47.1704,
+      "lng": 9.797664
+    },
+    "daysOfWeek": [4]
+  }
+]
