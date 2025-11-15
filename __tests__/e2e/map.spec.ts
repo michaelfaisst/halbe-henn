@@ -109,3 +109,124 @@ test.describe("Map Integration", () => {
     expect(hasError || hasMap).toBe(true);
   });
 });
+
+test.describe("Marker Interactions", () => {
+  test("clicking a marker opens popover", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map and markers to load
+    await page.waitForTimeout(2000);
+
+    // Find a marker (red dot)
+    const markers = page.locator(".mapboxgl-marker");
+    const markerCount = await markers.count();
+    expect(markerCount).toBeGreaterThan(0);
+
+    // Click the first marker
+    await markers.first().click();
+
+    // Wait for popover to appear
+    await page.waitForTimeout(500);
+
+    // Check that popover is visible (should contain stand information)
+    const popover = page
+      .locator('[role="dialog"]')
+      .or(page.locator("[data-radix-popper-content-wrapper]"));
+    await expect(popover.first()).toBeVisible({ timeout: 2000 });
+  });
+
+  test("popover displays correct stand information", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map and markers to load
+    await page.waitForTimeout(2000);
+
+    // Find and click a marker
+    const markers = page.locator(".mapboxgl-marker");
+    await markers.first().click();
+
+    // Wait for popover to appear
+    await page.waitForTimeout(500);
+
+    // Check that day names are displayed (all days should be visible)
+    await expect(page.getByText(/Montag/)).toBeVisible({ timeout: 2000 });
+    await expect(page.getByText(/Dienstag/)).toBeVisible({ timeout: 2000 });
+    await expect(page.getByText(/Samstag/)).toBeVisible({ timeout: 2000 });
+
+    // Check that stand information is displayed
+    // (name, address, and days should be visible)
+    const popover = page
+      .locator('[role="dialog"]')
+      .or(page.locator("[data-radix-popper-content-wrapper]"));
+    const popoverText = await popover.first().textContent();
+    expect(popoverText).toBeTruthy();
+    expect(popoverText?.length).toBeGreaterThan(0);
+  });
+
+  test("clicking outside closes popover", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map and markers to load
+    await page.waitForTimeout(2000);
+
+    // Find and click a marker
+    const markers = page.locator(".mapboxgl-marker");
+    await markers.first().click();
+
+    // Wait for popover to appear
+    await page.waitForTimeout(500);
+
+    // Verify popover is open
+    const popover = page
+      .locator('[role="dialog"]')
+      .or(page.locator("[data-radix-popper-content-wrapper]"));
+    await expect(popover.first()).toBeVisible({ timeout: 2000 });
+
+    // Click outside the popover (on the map)
+    await page.click("body", { position: { x: 100, y: 100 } });
+
+    // Wait for popover to close
+    await page.waitForTimeout(500);
+
+    // Verify popover is closed (should not be visible)
+    const popoverAfterClick = page
+      .locator('[role="dialog"]')
+      .or(page.locator("[data-radix-popper-content-wrapper]"));
+    const isVisible = await popoverAfterClick
+      .first()
+      .isVisible()
+      .catch(() => false);
+    expect(isVisible).toBe(false);
+  });
+
+  test("multiple markers can be clicked sequentially", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map and markers to load
+    await page.waitForTimeout(2000);
+
+    const markers = page.locator(".mapboxgl-marker");
+    const markerCount = await markers.count();
+    expect(markerCount).toBeGreaterThan(1); // Need at least 2 markers for this test
+
+    // Click first marker
+    await markers.first().click();
+    await page.waitForTimeout(500);
+
+    // Verify first popover is visible
+    let popover = page
+      .locator('[role="dialog"]')
+      .or(page.locator("[data-radix-popper-content-wrapper]"));
+    await expect(popover.first()).toBeVisible({ timeout: 2000 });
+
+    // Click second marker
+    await markers.nth(1).click();
+    await page.waitForTimeout(500);
+
+    // Verify popover is still visible (should show second marker's info)
+    popover = page
+      .locator('[role="dialog"]')
+      .or(page.locator("[data-radix-popper-content-wrapper]"));
+    await expect(popover.first()).toBeVisible({ timeout: 2000 });
+  });
+});

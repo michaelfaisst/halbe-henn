@@ -109,57 +109,57 @@ describe("getCurrentDayOfWeek", () => {
 });
 
 describe("formatDayName", () => {
-  it("should format day 1 as Monday", () => {
-    expect(formatDayName(1)).toBe("Monday");
+  it("should format day 1 as Montag", () => {
+    expect(formatDayName(1)).toBe("Montag");
   });
 
-  it("should format day 2 as Tuesday", () => {
-    expect(formatDayName(2)).toBe("Tuesday");
+  it("should format day 2 as Dienstag", () => {
+    expect(formatDayName(2)).toBe("Dienstag");
   });
 
-  it("should format day 3 as Wednesday", () => {
-    expect(formatDayName(3)).toBe("Wednesday");
+  it("should format day 3 as Mittwoch", () => {
+    expect(formatDayName(3)).toBe("Mittwoch");
   });
 
-  it("should format day 4 as Thursday", () => {
-    expect(formatDayName(4)).toBe("Thursday");
+  it("should format day 4 as Donnerstag", () => {
+    expect(formatDayName(4)).toBe("Donnerstag");
   });
 
-  it("should format day 5 as Friday", () => {
-    expect(formatDayName(5)).toBe("Friday");
+  it("should format day 5 as Freitag", () => {
+    expect(formatDayName(5)).toBe("Freitag");
   });
 
-  it("should format day 6 as Saturday", () => {
-    expect(formatDayName(6)).toBe("Saturday");
+  it("should format day 6 as Samstag", () => {
+    expect(formatDayName(6)).toBe("Samstag");
   });
 });
 
 describe("formatDaysOfWeek", () => {
   it("should format single day correctly", () => {
-    expect(formatDaysOfWeek([1])).toBe("Monday");
-    expect(formatDaysOfWeek([3])).toBe("Wednesday");
-    expect(formatDaysOfWeek([6])).toBe("Saturday");
+    expect(formatDaysOfWeek([1])).toBe("Montag");
+    expect(formatDaysOfWeek([3])).toBe("Mittwoch");
+    expect(formatDaysOfWeek([6])).toBe("Samstag");
   });
 
   it("should format multiple days correctly", () => {
-    expect(formatDaysOfWeek([1, 3, 5])).toBe("Monday, Wednesday, Friday");
-    expect(formatDaysOfWeek([2, 4, 6])).toBe("Tuesday, Thursday, Saturday");
+    expect(formatDaysOfWeek([1, 3, 5])).toBe("Montag, Mittwoch, Freitag");
+    expect(formatDaysOfWeek([2, 4, 6])).toBe("Dienstag, Donnerstag, Samstag");
   });
 
   it("should sort days before formatting", () => {
-    expect(formatDaysOfWeek([5, 1, 3])).toBe("Monday, Wednesday, Friday");
-    expect(formatDaysOfWeek([6, 2, 4])).toBe("Tuesday, Thursday, Saturday");
+    expect(formatDaysOfWeek([5, 1, 3])).toBe("Montag, Mittwoch, Freitag");
+    expect(formatDaysOfWeek([6, 2, 4])).toBe("Dienstag, Donnerstag, Samstag");
   });
 
   it("should handle consecutive days", () => {
-    expect(formatDaysOfWeek([1, 2, 3])).toBe("Monday, Tuesday, Wednesday");
-    expect(formatDaysOfWeek([4, 5, 6])).toBe("Thursday, Friday, Saturday");
+    expect(formatDaysOfWeek([1, 2, 3])).toBe("Montag, Dienstag, Mittwoch");
+    expect(formatDaysOfWeek([4, 5, 6])).toBe("Donnerstag, Freitag, Samstag");
   });
 
   it("should handle all days", () => {
     const allDays: DayOfWeek[] = [1, 2, 3, 4, 5, 6];
     expect(formatDaysOfWeek(allDays)).toBe(
-      "Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"
+      "Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag"
     );
   });
 
@@ -169,6 +169,6 @@ describe("formatDaysOfWeek", () => {
 
   it("should handle duplicate days (if they exist)", () => {
     // This shouldn't happen in practice, but test the behavior
-    expect(formatDaysOfWeek([1, 1, 3])).toBe("Monday, Monday, Wednesday");
+    expect(formatDaysOfWeek([1, 1, 3])).toBe("Montag, Montag, Mittwoch");
   });
 });

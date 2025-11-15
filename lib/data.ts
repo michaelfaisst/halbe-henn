@@ -115,30 +115,30 @@ export const getCurrentDayOfWeek = (): DayOfWeek => {
 };
 
 /**
- * Day names mapping
+ * Day names mapping (German)
  */
 const DAY_NAMES: Record<DayOfWeek, string> = {
-  1: "Monday",
-  2: "Tuesday",
-  3: "Wednesday",
-  4: "Thursday",
-  5: "Friday",
-  6: "Saturday",
+  1: "Montag",
+  2: "Dienstag",
+  3: "Mittwoch",
+  4: "Donnerstag",
+  5: "Freitag",
+  6: "Samstag",
 };
 
 /**
- * Formats a day number to its name
+ * Formats a day number to its name (German)
  * @param day - Day of week number (1-6)
- * @returns Day name (e.g., "Monday")
+ * @returns Day name (e.g., "Montag")
  */
 export const formatDayName = (day: DayOfWeek): string => {
   return DAY_NAMES[day];
 };
 
 /**
- * Formats an array of day numbers to a readable string
+ * Formats an array of day numbers to a readable string (German)
  * @param days - Array of day numbers (1-6)
- * @returns Formatted string (e.g., "Monday, Wednesday, Friday")
+ * @returns Formatted string (e.g., "Montag, Mittwoch, Freitag")
  */
 export const formatDaysOfWeek = (days: DayOfWeek[]): string => {
   if (days.length === 0) {

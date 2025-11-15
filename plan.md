@@ -125,32 +125,32 @@ Redesign of the halbe-henn.at website - a map-based application showing portable
 
 ### Tasks:
 
-- [ ] Make markers clickable
-- [ ] Create Tooltip/Popover component using shadcn
-- [ ] Display stand information in popover (all text in German):
-  - [ ] Supermarket name
-  - [ ] Address
-  - [ ] Available days (formatted nicely in German, e.g., "Montag, Mittwoch, Freitag")
-- [ ] Position popover relative to marker
-- [ ] Handle popover open/close state
-- [ ] Add animations/transitions for smooth UX
-- [ ] Write unit tests for:
-  - [ ] Popover component (renders correct data)
-  - [ ] Day formatting function (converts [1,3,5] to readable format)
-  - [ ] Popover open/close state management
-- [ ] Write e2e test for:
-  - [ ] Clicking a marker opens popover
-  - [ ] Popover displays correct stand information
-  - [ ] Clicking outside closes popover
-  - [ ] Multiple markers can be clicked sequentially
-- [ ] Verify all tests pass
+- [x] Make markers clickable
+- [x] Create Tooltip/Popover component using shadcn
+- [x] Display stand information in popover (all text in German):
+  - [x] Supermarket name
+  - [x] Address
+  - [x] Available days (formatted nicely in German, e.g., "Montag, Mittwoch, Freitag")
+- [x] Position popover relative to marker
+- [x] Handle popover open/close state
+- [x] Add animations/transitions for smooth UX
+- [x] Write unit tests for:
+  - [x] Popover component (renders correct data)
+  - [x] Day formatting function (converts [1,3,5] to readable format)
+  - [x] Popover open/close state management
+- [x] Write e2e test for:
+  - [x] Clicking a marker opens popover
+  - [x] Popover displays correct stand information
+  - [x] Clicking outside closes popover
+  - [x] Multiple markers can be clicked sequentially
+- [x] Verify all tests pass
 
 ### Deliverables:
 
-- [ ] Clickable markers
-- [ ] Information popover on marker click
-- [ ] Smooth animations
-- [ ] Unit and e2e tests passing
+- [x] Clickable markers
+- [x] Information popover on marker click
+- [x] Smooth animations
+- [x] Unit and e2e tests passing
 
 ---
 

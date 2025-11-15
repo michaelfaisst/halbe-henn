@@ -6,6 +6,7 @@ import type { Stand } from "@/types/stand";
 import { loadStands } from "@/lib/data";
 import { env } from "@/env.mjs";
 import { Spinner } from "@/components/ui/spinner";
+import { StandPopover } from "@/components/StandPopover";
 import { motion, AnimatePresence } from "framer-motion";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -38,6 +39,7 @@ export const MapComponent = ({
     padding: { top: 0, bottom: 0, left: 0, right: 0 },
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
 
   useEffect(() => {
     // Load stands if not provided as props
@@ -104,16 +106,29 @@ export const MapComponent = ({
                   : "mapbox://styles/mapbox/light-v11"
               }
             >
-              {stands.map((stand, index) => (
-                <Marker
-                  key={`${stand.name}-${index}`}
-                  latitude={stand.coordinates.lat}
-                  longitude={stand.coordinates.lng}
-                  anchor="center"
-                >
-                  <div className="h-4 w-4 cursor-pointer rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform hover:scale-125" />
-                </Marker>
-              ))}
+              {stands.map((stand, index) => {
+                const standId = `${stand.name}-${stand.coordinates.lat}-${stand.coordinates.lng}-${index}`;
+                const isOpen = openPopoverId === standId;
+
+                return (
+                  <Marker
+                    key={standId}
+                    latitude={stand.coordinates.lat}
+                    longitude={stand.coordinates.lng}
+                    anchor="center"
+                  >
+                    <StandPopover
+                      stand={stand}
+                      open={isOpen}
+                      onOpenChange={(open) => {
+                        setOpenPopoverId(open ? standId : null);
+                      }}
+                    >
+                      <div className="h-4 w-4 cursor-pointer rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform hover:scale-125" />
+                    </StandPopover>
+                  </Marker>
+                );
+              })}
             </Map>
           </motion.div>
         )}
