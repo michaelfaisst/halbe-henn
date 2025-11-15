@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,9 +21,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" className={`${inter.variable} overflow-x-hidden`}>
+    <html
+      lang="de"
+      className={`${inter.variable} overflow-x-hidden`}
+      suppressHydrationWarning
+    >
       <body className={`${inter.className} overflow-x-hidden`}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
         <Script
           src="/api/umami/script.js"
           data-website-id="4461bd62-66a1-4cd2-94bf-3ddfdb1e0a14"

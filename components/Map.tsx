@@ -8,6 +8,7 @@ import { env } from "@/env.mjs";
 import { Spinner } from "@/components/ui/spinner";
 import { StandPopover } from "@/components/StandPopover";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "next-themes";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 /**
@@ -22,13 +23,10 @@ const VORARLBERG_BOUNDS = {
 
 interface MapComponentProps {
   stands?: Stand[];
-  theme?: "light" | "dark";
 }
 
-export const MapComponent = ({
-  stands: propsStands,
-  theme = "light",
-}: MapComponentProps) => {
+export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
+  const { theme } = useTheme();
   const [stands, setStands] = useState<Stand[]>(propsStands ?? []);
   const [viewState, setViewState] = useState<ViewState>({
     latitude: VORARLBERG_BOUNDS.latitude,
@@ -117,14 +115,14 @@ export const MapComponent = ({
                 {stands.map((stand) => {
                   // Use stable key based on stand properties (no index)
                   const standId = `${stand.name}-${stand.coordinates.lat}-${stand.coordinates.lng}`;
-                const isOpen = openPopoverId === standId;
+                  const isOpen = openPopoverId === standId;
 
-                return (
-                  <Marker
-                    key={standId}
-                    latitude={stand.coordinates.lat}
-                    longitude={stand.coordinates.lng}
-                    anchor="center"
+                  return (
+                    <Marker
+                      key={standId}
+                      latitude={stand.coordinates.lat}
+                      longitude={stand.coordinates.lng}
+                      anchor="center"
                     >
                       <motion.div
                         initial={{ opacity: 0, scale: 0 }}
@@ -134,20 +132,20 @@ export const MapComponent = ({
                           duration: 0.3,
                           ease: [0.4, 0, 0.2, 1],
                         }}
-                  >
-                    <StandPopover
-                      stand={stand}
-                      open={isOpen}
-                      onOpenChange={(open) => {
-                        setOpenPopoverId(open ? standId : null);
-                      }}
-                    >
-                      <div className="h-4 w-4 cursor-pointer rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform hover:scale-125" />
-                    </StandPopover>
+                      >
+                        <StandPopover
+                          stand={stand}
+                          open={isOpen}
+                          onOpenChange={(open) => {
+                            setOpenPopoverId(open ? standId : null);
+                          }}
+                        >
+                          <div className="h-4 w-4 cursor-pointer rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform hover:scale-125" />
+                        </StandPopover>
                       </motion.div>
-                  </Marker>
-                );
-              })}
+                    </Marker>
+                  );
+                })}
               </AnimatePresence>
             </Map>
           </motion.div>

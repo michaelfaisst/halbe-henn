@@ -202,29 +202,29 @@ Redesign of the halbe-henn.at website - a map-based application showing portable
 
 ### Tasks:
 
-- [ ] Set up next-themes for theme management
-- [ ] Create theme toggle component using shadcn
-- [ ] Add theme toggle to side nav or header
-- [ ] Ensure map styling adapts to theme
-- [ ] Update all components to support both themes
-- [ ] Persist theme preference in localStorage
-- [ ] Write unit tests for:
-  - [ ] Theme toggle component (switches theme correctly)
-  - [ ] Theme persistence (saves to localStorage)
-- [ ] Write e2e tests for:
-  - [ ] Theme toggle button is visible and clickable
-  - [ ] Clicking toggle switches between dark/light mode
-  - [ ] Theme preference persists on page reload
-  - [ ] All components render correctly in both themes
-  - [ ] Map styling adapts to theme
-- [ ] Verify all tests pass
+- [x] Set up next-themes for theme management
+- [x] Create theme toggle component using shadcn
+- [x] Add theme toggle to side nav or header
+- [x] Ensure map styling adapts to theme
+- [x] Update all components to support both themes
+- [x] Persist theme preference in localStorage
+- [x] Write unit tests for:
+  - [x] Theme toggle component (switches theme correctly)
+  - [x] Theme persistence (saves to localStorage)
+- [x] Write e2e tests for:
+  - [x] Theme toggle button is visible and clickable
+  - [x] Clicking toggle switches between dark/light mode
+  - [x] Theme preference persists on page reload
+  - [x] All components render correctly in both themes
+  - [x] Map styling adapts to theme
+- [x] Verify all tests pass
 
 ### Deliverables:
 
-- [ ] Working dark/light mode toggle
-- [ ] All components styled for both themes
-- [ ] Theme preference persistence
-- [ ] Unit and e2e tests passing
+- [x] Working dark/light mode toggle
+- [x] All components styled for both themes
+- [x] Theme preference persistence
+- [x] Unit and e2e tests passing
 
 ---
 

@@ -11,7 +11,7 @@ import type { Stand, DayOfWeek } from "@/types/stand";
 export default function Home() {
   const [allStands, setAllStands] = useState<Stand[]>([]);
   // Initialize with default selected days (current day) using lazy initializer
-  const [selectedDays, setSelectedDays] = useState<DayOfWeek[]>(() => 
+  const [selectedDays, setSelectedDays] = useState<DayOfWeek[]>(() =>
     getDefaultSelectedDays(getCurrentDayOfWeek)
   );
   const [filteredStands, setFilteredStands] = useState<Stand[]>([]);

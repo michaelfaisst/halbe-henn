@@ -39,8 +39,8 @@ export const StandPopover = ({
           <h3 className="mb-2 text-lg font-bold leading-none tracking-tight">
             {stand.name}
           </h3>
-          <p className="mb-4 text-sm text-gray-500">{stand.address}</p>
-          <div className="-mx-6 my-4 border-t border-gray-100" />
+          <p className="mb-4 text-sm text-muted-foreground">{stand.address}</p>
+          <div className="-mx-6 my-4 border-t border-border" />
 
           <div className="space-y-1">
             <div className="space-y-1.5">
