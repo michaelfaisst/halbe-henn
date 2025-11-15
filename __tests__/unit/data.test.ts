@@ -5,7 +5,7 @@ import {
   formatDayName,
   formatDaysOfWeek,
 } from "@/lib/data";
-import type { Stand, DayOfWeek } from "@/types/stand";
+import type { DayOfWeek } from "@/types/stand";
 
 describe("loadStands", () => {
   it("should load stands data correctly", () => {

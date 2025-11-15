@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useState, useCallback, useMemo, memo } from "react";
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  memo,
+  type KeyboardEvent,
+} from "react";
 import Map, { Marker, ViewState } from "react-map-gl/mapbox";
 import type { Stand } from "@/types/stand";
 import { loadStands } from "@/lib/data";
@@ -32,45 +39,47 @@ interface StandMarkerProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const StandMarker = memo(({ stand, isOpen, onOpenChange }: StandMarkerProps) => {
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        onOpenChange(!isOpen);
-      }
-    },
-    [isOpen, onOpenChange]
-  );
+const StandMarker = memo(
+  ({ stand, isOpen, onOpenChange }: StandMarkerProps) => {
+    const handleKeyDown = useCallback(
+      (e: KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpenChange(!isOpen);
+        }
+      },
+      [isOpen, onOpenChange]
+    );
 
-  return (
-    <Marker
-      latitude={stand.coordinates.lat}
-      longitude={stand.coordinates.lng}
-      anchor="center"
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0 }}
-        transition={{
-          duration: 0.3,
-          ease: [0.4, 0, 0.2, 1],
-        }}
+    return (
+      <Marker
+        latitude={stand.coordinates.lat}
+        longitude={stand.coordinates.lng}
+        anchor="center"
       >
-        <StandPopover stand={stand} open={isOpen} onOpenChange={onOpenChange}>
-          <div
-            role="button"
-            tabIndex={0}
-            aria-label={`Stand ${stand.name} öffnen`}
-            onKeyDown={handleKeyDown}
-            className="h-4 w-4 cursor-pointer rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform hover:scale-125 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-          />
-        </StandPopover>
-      </motion.div>
-    </Marker>
-  );
-});
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0 }}
+          transition={{
+            duration: 0.3,
+            ease: [0.4, 0, 0.2, 1],
+          }}
+        >
+          <StandPopover stand={stand} open={isOpen} onOpenChange={onOpenChange}>
+            <div
+              role="button"
+              tabIndex={0}
+              aria-label={`Stand ${stand.name} öffnen`}
+              onKeyDown={handleKeyDown}
+              className="h-4 w-4 cursor-pointer rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform hover:scale-125 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            />
+          </StandPopover>
+        </motion.div>
+      </Marker>
+    );
+  }
+);
 
 StandMarker.displayName = "StandMarker";
 
@@ -136,7 +145,8 @@ export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
   // Memoize stand IDs to prevent unnecessary re-renders
   const standIds = useMemo(() => {
     return stands.map(
-      (stand) => `${stand.name}-${stand.coordinates.lat}-${stand.coordinates.lng}`
+      (stand) =>
+        `${stand.name}-${stand.coordinates.lat}-${stand.coordinates.lng}`
     );
   }, [stands]);
 
@@ -160,7 +170,11 @@ export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
   const showLoading = isLoading;
 
   return (
-    <div className="relative h-screen w-full" role="application" aria-label="Karte mit Standorten">
+    <div
+      className="relative h-screen w-full"
+      role="application"
+      aria-label="Karte mit Standorten"
+    >
       <AnimatePresence mode="wait">
         {showLoading ? (
           <motion.div

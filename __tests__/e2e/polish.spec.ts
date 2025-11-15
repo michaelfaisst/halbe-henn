@@ -6,7 +6,9 @@ test.describe("Loading States", () => {
 
     // Check for loading indicator
     const loadingText = page.getByText(/Karte wird geladen/i);
-    const spinner = page.locator('[role="status"]').or(page.locator(".animate-spin"));
+    const spinner = page
+      .locator('[role="status"]')
+      .or(page.locator(".animate-spin"));
 
     // Loading state should appear briefly
     const loadingVisible = await loadingText.isVisible().catch(() => false);
@@ -93,7 +95,10 @@ test.describe("Keyboard Navigation", () => {
     const popover = page
       .locator('[role="dialog"]')
       .or(page.locator("[data-radix-popper-content-wrapper]"));
-    const isVisible = await popover.first().isVisible().catch(() => false);
+    const isVisible = await popover
+      .first()
+      .isVisible()
+      .catch(() => false);
     expect(isVisible).toBe(true);
   });
 
@@ -119,7 +124,10 @@ test.describe("Keyboard Navigation", () => {
     await page.waitForTimeout(500);
 
     // Popover should be closed
-    const isVisible = await popover.first().isVisible().catch(() => false);
+    const isVisible = await popover
+      .first()
+      .isVisible()
+      .catch(() => false);
     expect(isVisible).toBe(false);
   });
 
@@ -235,7 +243,10 @@ test.describe("Error Handling", () => {
     // Map or main content should be visible
     const mapContainer = page.locator(".mapboxgl-map");
     const mainContent = page.locator("main");
-    const hasMap = await mapContainer.first().isVisible().catch(() => false);
+    const hasMap = await mapContainer
+      .first()
+      .isVisible()
+      .catch(() => false);
     const hasMain = await mainContent.isVisible().catch(() => false);
 
     expect(hasMap || hasMain).toBe(true);
@@ -252,7 +263,10 @@ test.describe("Error Handling", () => {
     const mapContainer = page.locator(".mapboxgl-map");
 
     const hasError = await errorMessage.isVisible().catch(() => false);
-    const hasMap = await mapContainer.first().isVisible().catch(() => false);
+    const hasMap = await mapContainer
+      .first()
+      .isVisible()
+      .catch(() => false);
 
     // One of them should be visible
     expect(hasError || hasMap).toBe(true);
@@ -324,10 +338,11 @@ test.describe("Accessibility", () => {
     await expect(popover.first()).toBeVisible({ timeout: 2000 });
 
     // Check for aria-labelledby
-    const popoverWithLabel = page.locator(
-      '[role="dialog"][aria-labelledby]'
-    );
-    const hasLabel = await popoverWithLabel.first().isVisible().catch(() => false);
+    const popoverWithLabel = page.locator('[role="dialog"][aria-labelledby]');
+    const hasLabel = await popoverWithLabel
+      .first()
+      .isVisible()
+      .catch(() => false);
     expect(hasLabel).toBe(true);
   });
 
@@ -354,9 +369,7 @@ test.describe("Accessibility", () => {
     expect(isModal).toBe(true);
 
     // Check for aria-labelledby
-    const dialogWithLabel = page.locator(
-      '[role="dialog"][aria-labelledby]'
-    );
+    const dialogWithLabel = page.locator('[role="dialog"][aria-labelledby]');
     const hasLabel = await dialogWithLabel.isVisible().catch(() => false);
     expect(hasLabel).toBe(true);
   });
@@ -369,7 +382,7 @@ test.describe("Accessibility", () => {
     const hasStatus = await loadingStatus.isVisible().catch(() => false);
 
     // Or check for aria-live region
-    const liveRegion = page.locator('[aria-live]');
+    const liveRegion = page.locator("[aria-live]");
     const hasLive = await liveRegion.isVisible().catch(() => false);
 
     // At least one should be present during loading
@@ -502,4 +515,3 @@ test.describe("Smooth Transitions", () => {
     expect(isVisible).toBe(false);
   });
 });
-

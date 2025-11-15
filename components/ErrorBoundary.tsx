@@ -1,6 +1,6 @@
 "use client";
 
-import { Component, type ReactNode } from "react";
+import { Component, type ReactNode, type ErrorInfo } from "react";
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("ErrorBoundary caught an error:", error, errorInfo);
   }
 
@@ -65,7 +65,7 @@ export class ErrorBoundary extends Component<
                 </pre>
               </details>
             )}
-            <div className="flex gap-2 justify-center">
+            <div className="flex justify-center gap-2">
               <Button onClick={this.handleReset} variant="default">
                 Erneut versuchen
               </Button>
@@ -84,4 +84,3 @@ export class ErrorBoundary extends Component<
     return this.props.children;
   }
 }
-

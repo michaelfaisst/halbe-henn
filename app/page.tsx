@@ -11,17 +11,21 @@ import { Spinner } from "@/components/ui/spinner";
 import type { Stand, DayOfWeek } from "@/types/stand";
 
 // Dynamically import Map component to reduce initial bundle size
-const MapComponent = dynamic(() => import("@/components/Map").then((mod) => ({ default: mod.MapComponent })), {
-  loading: () => (
-    <div className="flex h-screen w-full items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <Spinner className="h-8 w-8" />
-        <p className="text-sm text-muted-foreground">Karte wird geladen...</p>
+const MapComponent = dynamic(
+  () =>
+    import("@/components/Map").then((mod) => ({ default: mod.MapComponent })),
+  {
+    loading: () => (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Spinner className="h-8 w-8" />
+          <p className="text-sm text-muted-foreground">Karte wird geladen...</p>
+        </div>
       </div>
-    </div>
-  ),
-  ssr: false,
-});
+    ),
+    ssr: false,
+  }
+);
 
 export default function Home() {
   const [allStands, setAllStands] = useState<Stand[]>([]);
@@ -65,7 +69,9 @@ export default function Home() {
           <div className="flex h-screen w-full items-center justify-center">
             <div className="flex flex-col items-center gap-4">
               <Spinner className="h-8 w-8" />
-              <p className="text-sm text-muted-foreground">Karte wird geladen...</p>
+              <p className="text-sm text-muted-foreground">
+                Karte wird geladen...
+              </p>
             </div>
           </div>
         }

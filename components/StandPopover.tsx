@@ -8,10 +8,11 @@ import {
 import type { Stand, DayOfWeek } from "@/types/stand";
 import { formatDayName } from "@/lib/data";
 import { Check, X } from "lucide-react";
+import type { ReactNode } from "react";
 
 interface StandPopoverProps {
   stand: Stand;
-  children: React.ReactNode;
+  children: ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
@@ -51,7 +52,10 @@ export const StandPopover = ({
           >
             {stand.address}
           </p>
-          <div className="-mx-6 my-4 border-t border-border" aria-hidden="true" />
+          <div
+            className="-mx-6 my-4 border-t border-border"
+            aria-hidden="true"
+          />
 
           <div className="space-y-1">
             <h4 className="mb-2 text-xs font-semibold uppercase text-muted-foreground">

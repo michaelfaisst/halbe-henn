@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import type { Stand } from "@/types/stand";
 
 // Note: Full Map component unit tests are challenging due to Bun's module resolution
