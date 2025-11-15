@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter } from "next/font/google";
+import { Inter, Righteous } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+});
+
+const righteous = Righteous({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-righteous",
 });
 
 export const metadata: Metadata = {
@@ -23,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="de"
-      className={`${inter.variable} overflow-x-hidden`}
+      className={`${inter.variable} ${righteous.variable} overflow-x-hidden`}
       suppressHydrationWarning
     >
       <body className={`${inter.className} overflow-x-hidden`}>
@@ -33,7 +40,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          {children}
+          <ErrorBoundary>{children}</ErrorBoundary>
         </ThemeProvider>
         <Script
           src="/api/umami/script.js"

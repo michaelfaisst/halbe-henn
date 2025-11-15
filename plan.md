@@ -234,29 +234,29 @@ Redesign of the halbe-henn.at website - a map-based application showing portable
 
 ### Tasks:
 
-- [ ] Add loading states for map initialization
-- [ ] Optimize marker rendering
-- [ ] Add smooth transitions when filtering
-- [ ] Improve mobile responsiveness
-- [ ] Add keyboard navigation support
-- [ ] Optimize bundle size
-- [ ] Add error boundaries
-- [ ] Improve accessibility (ARIA labels, keyboard navigation)
-- [ ] Write e2e tests for:
-  - [ ] Loading states appear during map initialization
-  - [ ] Keyboard navigation works (Tab, Enter, Escape)
-  - [ ] Error handling (graceful degradation if map fails)
-  - [ ] Accessibility (screen reader compatibility)
-- [ ] Run performance tests and verify improvements
-- [ ] Verify all existing tests still pass
+- [x] Add loading states for map initialization
+- [x] Optimize marker rendering
+- [x] Add smooth transitions when filtering
+- [x] Improve mobile responsiveness
+- [x] Add keyboard navigation support
+- [x] Optimize bundle size
+- [x] Add error boundaries
+- [x] Improve accessibility (ARIA labels, keyboard navigation)
+- [x] Write e2e tests for:
+  - [x] Loading states appear during map initialization
+  - [x] Keyboard navigation works (Tab, Enter, Escape)
+  - [x] Error handling (graceful degradation if map fails)
+  - [x] Accessibility (screen reader compatibility)
+- [x] Run performance tests and verify improvements
+- [x] Verify all existing tests still pass
 
 ### Deliverables:
 
-- [ ] Smooth, polished user experience
-- [ ] Good performance
-- [ ] Mobile-friendly
-- [ ] Accessibility improvements
-- [ ] All tests passing
+- [x] Smooth, polished user experience
+- [x] Good performance
+- [x] Mobile-friendly
+- [x] Accessibility improvements
+- [x] All tests passing
 
 ---
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo, memo } from "react";
 import Map, { Marker, ViewState } from "react-map-gl/mapbox";
 import type { Stand } from "@/types/stand";
 import { loadStands } from "@/lib/data";
@@ -25,6 +25,55 @@ interface MapComponentProps {
   stands?: Stand[];
 }
 
+// Memoized marker component for performance
+interface StandMarkerProps {
+  stand: Stand;
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const StandMarker = memo(({ stand, isOpen, onOpenChange }: StandMarkerProps) => {
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onOpenChange(!isOpen);
+      }
+    },
+    [isOpen, onOpenChange]
+  );
+
+  return (
+    <Marker
+      latitude={stand.coordinates.lat}
+      longitude={stand.coordinates.lng}
+      anchor="center"
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0 }}
+        transition={{
+          duration: 0.3,
+          ease: [0.4, 0, 0.2, 1],
+        }}
+      >
+        <StandPopover stand={stand} open={isOpen} onOpenChange={onOpenChange}>
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label={`Stand ${stand.name} öffnen`}
+            onKeyDown={handleKeyDown}
+            className="h-4 w-4 cursor-pointer rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform hover:scale-125 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          />
+        </StandPopover>
+      </motion.div>
+    </Marker>
+  );
+});
+
+StandMarker.displayName = "StandMarker";
+
 export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
   const { theme } = useTheme();
   const [stands, setStands] = useState<Stand[]>(propsStands ?? []);
@@ -45,11 +94,15 @@ export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
       try {
         const loadedStands = loadStands();
         setStands(loadedStands);
+        setIsLoading(false);
       } catch (error) {
         console.error("Failed to load stands:", error);
+        setIsLoading(false);
       }
+    } else {
+      // If stands are provided as props, we're not loading
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, [propsStands]);
 
   // Update stands when propsStands changes
@@ -59,30 +112,67 @@ export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
     }
   }, [propsStands]);
 
+  // Handle keyboard navigation for closing popover
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && openPopoverId) {
+        setOpenPopoverId(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [openPopoverId]);
+
+  // Handle map movement
+  const handleMapMove = useCallback((evt: { viewState: ViewState }) => {
+    setViewState(evt.viewState);
+  }, []);
+
+  const handlePopoverChange = useCallback((standId: string | null) => {
+    setOpenPopoverId(standId);
+  }, []);
+
+  // Memoize stand IDs to prevent unnecessary re-renders
+  const standIds = useMemo(() => {
+    return stands.map(
+      (stand) => `${stand.name}-${stand.coordinates.lat}-${stand.coordinates.lng}`
+    );
+  }, [stands]);
+
   const mapboxToken = env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
   if (!mapboxToken) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
+      <div
+        className="flex h-screen w-full items-center justify-center"
+        role="alert"
+        aria-live="assertive"
+      >
         <p className="text-lg text-red-500">
-          Mapbox access token is missing. Please set
-          NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in your environment variables.
+          Mapbox-Zugriffstoken fehlt. Bitte setzen Sie
+          NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN in Ihren Umgebungsvariablen.
         </p>
       </div>
     );
   }
 
+  const showLoading = isLoading;
+
   return (
-    <div className="relative h-screen w-full">
+    <div className="relative h-screen w-full" role="application" aria-label="Karte mit Standorten">
       <AnimatePresence mode="wait">
-        {isLoading ? (
+        {showLoading ? (
           <motion.div
             key="loading"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 z-10 flex items-center justify-center bg-background/80"
+            className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/80"
+            role="status"
+            aria-live="polite"
+            aria-label="Karte wird geladen"
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -91,6 +181,9 @@ export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
             >
               <Spinner className="h-8 w-8" />
             </motion.div>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Karte wird geladen...
+            </p>
           </motion.div>
         ) : (
           <motion.div
@@ -102,7 +195,7 @@ export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
           >
             <Map
               {...viewState}
-              onMove={(evt) => setViewState(evt.viewState)}
+              onMove={handleMapMove}
               mapboxAccessToken={mapboxToken}
               style={{ width: "100%", height: "100%" }}
               mapStyle={
@@ -111,39 +204,20 @@ export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
                   : "mapbox://styles/mapbox/light-v11"
               }
             >
-              <AnimatePresence initial={false}>
-                {stands.map((stand) => {
-                  // Use stable key based on stand properties (no index)
-                  const standId = `${stand.name}-${stand.coordinates.lat}-${stand.coordinates.lng}`;
+              <AnimatePresence initial={false} mode="popLayout">
+                {stands.map((stand, index) => {
+                  const standId = standIds[index];
                   const isOpen = openPopoverId === standId;
 
                   return (
-                    <Marker
+                    <StandMarker
                       key={standId}
-                      latitude={stand.coordinates.lat}
-                      longitude={stand.coordinates.lng}
-                      anchor="center"
-                    >
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0 }}
-                        transition={{
-                          duration: 0.3,
-                          ease: [0.4, 0, 0.2, 1],
-                        }}
-                      >
-                        <StandPopover
-                          stand={stand}
-                          open={isOpen}
-                          onOpenChange={(open) => {
-                            setOpenPopoverId(open ? standId : null);
-                          }}
-                        >
-                          <div className="h-4 w-4 cursor-pointer rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform hover:scale-125" />
-                        </StandPopover>
-                      </motion.div>
-                    </Marker>
+                      stand={stand}
+                      isOpen={isOpen}
+                      onOpenChange={(open) =>
+                        handlePopoverChange(open ? standId : null)
+                      }
+                    />
                   );
                 })}
               </AnimatePresence>

@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        righteous: ["var(--font-righteous)", "sans-serif"],
       },
       colors: {
         background: "hsl(var(--background))",
