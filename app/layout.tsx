@@ -20,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" className={inter.variable}>
-      <body className={inter.className}>
+    <html lang="de" className={`${inter.variable} overflow-x-hidden`}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         {children}
         <Script
           src="/api/umami/script.js"

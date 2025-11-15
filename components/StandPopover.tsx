@@ -29,30 +29,35 @@ export const StandPopover = ({
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
-      <PopoverContent className="w-80" side="top" align="center" sideOffset={8}>
-        <div className="space-y-3">
-          <div>
-            <h3 className="text-lg font-semibold leading-none">{stand.name}</h3>
-          </div>
+      <PopoverContent
+        className="w-80 p-5"
+        side="top"
+        align="center"
+        sideOffset={8}
+      >
+        <div>
+          <h3 className="mb-2 text-lg font-bold leading-none tracking-tight">
+            {stand.name}
+          </h3>
+          <p className="mb-4 text-sm text-gray-500">{stand.address}</p>
+          <div className="-mx-6 my-4 border-t border-gray-100" />
+
           <div className="space-y-1">
-            <p className="text-sm text-muted-foreground">{stand.address}</p>
-          </div>
-          <div className="space-y-1">
-            <div className="space-y-0.5">
+            <div className="space-y-1.5">
               {ALL_DAYS.map((day) => {
                 const available = isDayAvailable(day);
                 return (
                   <div key={day} className="flex items-center gap-2 text-sm">
                     {available ? (
-                      <Check className="h-4 w-4 text-red-500" />
+                      <Check className="h-4 w-4 text-green-600" />
                     ) : (
-                      <X className="h-4 w-4 text-muted-foreground/50" />
+                      <X className="h-4 w-4 text-muted-foreground/40" />
                     )}
                     <span
                       className={
                         available
                           ? "text-foreground/80"
-                          : "text-muted-foreground/60"
+                          : "text-muted-foreground/40"
                       }
                     >
                       {formatDayName(day)}

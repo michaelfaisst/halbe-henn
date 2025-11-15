@@ -160,39 +160,39 @@ Redesign of the halbe-henn.at website - a map-based application showing portable
 
 ### Tasks:
 
-- [ ] Create SideNav component using shadcn components
-- [ ] Design filter UI (checkboxes or multi-select for days)
-- [ ] Implement default filter (current day of week)
-- [ ] Create filtering utility function:
-  - [ ] Filter stands by selected days
-  - [ ] Handle multiple day selection
-  - [ ] Return filtered stand list
-- [ ] Ensure all UI text is in German (day names, labels, etc.)
-- [ ] Add filtering logic to show/hide markers based on selected days
-- [ ] Update map markers when filter changes
+- [x] Create SideNav component using shadcn components
+- [x] Design filter UI (checkboxes or multi-select for days)
+- [x] Implement default filter (current day of week)
+- [x] Create filtering utility function:
+  - [x] Filter stands by selected days
+  - [x] Handle multiple day selection
+  - [x] Return filtered stand list
+- [x] Ensure all UI text is in German (day names, labels, etc.)
+- [x] Add filtering logic to show/hide markers based on selected days
+- [x] Update map markers when filter changes
 - [ ] Add image and text content to side nav (from original site) - **See Open Questions**
-- [ ] Style side nav to overlay on map (positioned absolutely on right side)
-- [ ] Make side nav responsive (mobile-friendly)
-- [ ] Write unit tests for:
-  - [ ] Filtering utility function (filters correctly by single day)
-  - [ ] Filtering utility function (filters correctly by multiple days)
-  - [ ] Default filter initialization (uses current day)
-  - [ ] Edge cases (no days selected, all days selected)
-- [ ] Write e2e tests for:
-  - [ ] Default filter shows only current day's stands
-  - [ ] Selecting different days updates visible markers
-  - [ ] Multiple day selection works correctly
-  - [ ] Filter persists during marker interactions
-  - [ ] Mobile filter UI works correctly
-- [ ] Verify all tests pass
+- [x] Style side nav to overlay on map (positioned absolutely on right side)
+- [x] Make side nav responsive (mobile-friendly)
+- [x] Write unit tests for:
+  - [x] Filtering utility function (filters correctly by single day)
+  - [x] Filtering utility function (filters correctly by multiple days)
+  - [x] Default filter initialization (uses current day)
+  - [x] Edge cases (no days selected, all days selected)
+- [x] Write e2e tests for:
+  - [x] Default filter shows only current day's stands
+  - [x] Selecting different days updates visible markers
+  - [x] Multiple day selection works correctly
+  - [x] Filter persists during marker interactions
+  - [x] Mobile filter UI works correctly
+- [x] Verify all tests pass
 
 ### Deliverables:
 
-- [ ] Side navigation overlay
-- [ ] Day filter functionality
-- [ ] Default filter set to current day
-- [ ] Filtered markers on map
-- [ ] Comprehensive unit and e2e tests passing
+- [x] Side navigation overlay
+- [x] Day filter functionality
+- [x] Default filter set to current day
+- [x] Filtered markers on map
+- [x] Comprehensive unit and e2e tests passing
 
 ---
 

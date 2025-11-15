@@ -54,6 +54,13 @@ export const MapComponent = ({
     setIsLoading(false);
   }, [propsStands]);
 
+  // Update stands when propsStands changes
+  useEffect(() => {
+    if (propsStands !== undefined) {
+      setStands(propsStands);
+    }
+  }, [propsStands]);
+
   const mapboxToken = env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
   if (!mapboxToken) {
@@ -106,8 +113,10 @@ export const MapComponent = ({
                   : "mapbox://styles/mapbox/light-v11"
               }
             >
-              {stands.map((stand, index) => {
-                const standId = `${stand.name}-${stand.coordinates.lat}-${stand.coordinates.lng}-${index}`;
+              <AnimatePresence initial={false}>
+                {stands.map((stand) => {
+                  // Use stable key based on stand properties (no index)
+                  const standId = `${stand.name}-${stand.coordinates.lat}-${stand.coordinates.lng}`;
                 const isOpen = openPopoverId === standId;
 
                 return (
@@ -116,6 +125,15 @@ export const MapComponent = ({
                     latitude={stand.coordinates.lat}
                     longitude={stand.coordinates.lng}
                     anchor="center"
+                    >
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0 }}
+                        transition={{
+                          duration: 0.3,
+                          ease: [0.4, 0, 0.2, 1],
+                        }}
                   >
                     <StandPopover
                       stand={stand}
@@ -126,9 +144,11 @@ export const MapComponent = ({
                     >
                       <div className="h-4 w-4 cursor-pointer rounded-full border-2 border-white bg-red-500 shadow-lg transition-transform hover:scale-125" />
                     </StandPopover>
+                      </motion.div>
                   </Marker>
                 );
               })}
+              </AnimatePresence>
             </Map>
           </motion.div>
         )}

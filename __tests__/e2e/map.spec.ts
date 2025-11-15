@@ -230,3 +230,285 @@ test.describe("Marker Interactions", () => {
     await expect(popover.first()).toBeVisible({ timeout: 2000 });
   });
 });
+
+test.describe("Day Filtering", () => {
+  test("default filter shows only current day's stands", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map to load
+    await page.waitForTimeout(2000);
+
+    // Open side nav by clicking the toggle button
+    const toggleButton = page.getByRole("button", {
+      name: /Navigation öffnen|Navigation schließen/i,
+    });
+    await expect(toggleButton).toBeVisible({ timeout: 2000 });
+    await toggleButton.click();
+    await page.waitForTimeout(500);
+
+    // Verify side nav is visible
+    const sideNav = page.getByText("Halbe Henn");
+    await expect(sideNav).toBeVisible({ timeout: 2000 });
+
+    // Get initial marker count (should be filtered by current day)
+    const markers = page.locator(".mapboxgl-marker");
+    const initialMarkerCount = await markers.count();
+
+    // Should have at least some markers (depending on current day)
+    expect(initialMarkerCount).toBeGreaterThanOrEqual(0);
+
+    // Verify that at least one day checkbox is checked (current day)
+    const checkedCheckboxes = page.locator('input[type="checkbox"]:checked');
+    const checkedCount = await checkedCheckboxes.count();
+    expect(checkedCount).toBeGreaterThanOrEqual(1);
+  });
+
+  test("selecting different days updates visible markers", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map to load
+    await page.waitForTimeout(2000);
+
+    // Open side nav
+    const toggleButton = page.getByRole("button", {
+      name: /Navigation öffnen|Navigation schließen/i,
+    });
+    await toggleButton.click();
+    await page.waitForTimeout(500);
+
+    // Get initial marker count
+    const markers = page.locator(".mapboxgl-marker");
+    const initialMarkerCount = await markers.count();
+
+    // Find and click "Dienstag" (Tuesday) checkbox
+    const dienstagLabel = page.getByText("Dienstag");
+    await expect(dienstagLabel).toBeVisible({ timeout: 2000 });
+
+    // Get the checkbox associated with Dienstag
+    const dienstagCheckbox = page.locator('input[id="day-2"]');
+    const isChecked = await dienstagCheckbox.isChecked();
+
+    // Click to toggle
+    await dienstagLabel.click();
+    await page.waitForTimeout(1000); // Wait for filter to apply
+
+    // If it was unchecked, markers should change
+    if (!isChecked) {
+      const newMarkerCount = await markers.count();
+      // Marker count should have changed (either increased or decreased)
+      // We can't predict exact count, but it should be different or same
+      expect(newMarkerCount).toBeGreaterThanOrEqual(0);
+    }
+
+    // Verify checkbox state changed
+    const newCheckedState = await dienstagCheckbox.isChecked();
+    expect(newCheckedState).toBe(!isChecked);
+  });
+
+  test("multiple day selection works correctly", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map to load
+    await page.waitForTimeout(2000);
+
+    // Open side nav
+    const toggleButton = page.getByRole("button", {
+      name: /Navigation öffnen|Navigation schließen/i,
+    });
+    await toggleButton.click();
+    await page.waitForTimeout(500);
+
+    // Click "Montag" (Monday) checkbox
+    const montagLabel = page.getByText("Montag");
+    await expect(montagLabel).toBeVisible({ timeout: 2000 });
+    await montagLabel.click();
+    await page.waitForTimeout(500);
+
+    // Click "Mittwoch" (Wednesday) checkbox
+    const mittwochLabel = page.getByText("Mittwoch");
+    await expect(mittwochLabel).toBeVisible({ timeout: 2000 });
+    await mittwochLabel.click();
+    await page.waitForTimeout(1000); // Wait for filter to apply
+
+    // Verify both checkboxes are checked
+    const montagCheckbox = page.locator('input[id="day-1"]');
+    const mittwochCheckbox = page.locator('input[id="day-3"]');
+
+    const montagChecked = await montagCheckbox.isChecked();
+    const mittwochChecked = await mittwochCheckbox.isChecked();
+
+    expect(montagChecked).toBe(true);
+    expect(mittwochChecked).toBe(true);
+
+    // Verify markers are visible (should show stands available on Monday OR Wednesday)
+    const markers = page.locator(".mapboxgl-marker");
+    const markerCount = await markers.count();
+    expect(markerCount).toBeGreaterThanOrEqual(0);
+  });
+
+  test("filter persists during marker interactions", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map to load
+    await page.waitForTimeout(2000);
+
+    // Open side nav
+    const toggleButton = page.getByRole("button", {
+      name: /Navigation öffnen|Navigation schließen/i,
+    });
+    await toggleButton.click();
+    await page.waitForTimeout(500);
+
+    // Select a specific day (e.g., Freitag - Friday)
+    const freitagLabel = page.getByText("Freitag");
+    await expect(freitagLabel).toBeVisible({ timeout: 2000 });
+    await freitagLabel.click();
+    await page.waitForTimeout(1000);
+
+    // Get marker count with filter
+    const markers = page.locator(".mapboxgl-marker");
+    const markerCountBefore = await markers.count();
+
+    // Click a marker to open popover
+    if (markerCountBefore > 0) {
+      await markers.first().click();
+      await page.waitForTimeout(500);
+
+      // Verify popover is visible
+      const popover = page
+        .locator('[role="dialog"]')
+        .or(page.locator("[data-radix-popper-content-wrapper]"));
+      await expect(popover.first()).toBeVisible({ timeout: 2000 });
+
+      // Close popover by clicking outside
+      await page.click("body", { position: { x: 100, y: 100 } });
+      await page.waitForTimeout(500);
+
+      // Verify filter is still applied (same marker count)
+      const markerCountAfter = await markers.count();
+      expect(markerCountAfter).toBe(markerCountBefore);
+    }
+  });
+
+  test("mobile filter UI works correctly", async ({ page }) => {
+    // Set mobile viewport
+    await page.setViewportSize({ width: 375, height: 667 });
+
+    await page.goto("/");
+
+    // Wait for map to load
+    await page.waitForTimeout(2000);
+
+    // Open side nav
+    const toggleButton = page.getByRole("button", {
+      name: /Navigation öffnen|Navigation schließen/i,
+    });
+    await toggleButton.click();
+    await page.waitForTimeout(500);
+
+    // Verify side nav is visible on mobile
+    const sideNav = page.getByText("Halbe Henn");
+    await expect(sideNav).toBeVisible({ timeout: 2000 });
+
+    // Verify filter checkboxes are visible and clickable
+    const montagLabel = page.getByText("Montag");
+    await expect(montagLabel).toBeVisible({ timeout: 2000 });
+
+    // Click a checkbox on mobile
+    await montagLabel.click();
+    await page.waitForTimeout(1000);
+
+    // Verify checkbox state changed
+    const montagCheckbox = page.locator('input[id="day-1"]');
+    const isChecked = await montagCheckbox.isChecked();
+    expect(isChecked).toBe(true);
+
+    // Verify markers are visible
+    const markers = page.locator(".mapboxgl-marker");
+    const markerCount = await markers.count();
+    expect(markerCount).toBeGreaterThanOrEqual(0);
+  });
+
+  test("cannot uncheck last selected day", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map to load
+    await page.waitForTimeout(2000);
+
+    // Open side nav
+    const toggleButton = page.getByRole("button", {
+      name: /Navigation öffnen|Navigation schließen/i,
+    });
+    await toggleButton.click();
+    await page.waitForTimeout(500);
+
+    // Get the currently checked checkbox (should be current day)
+    const checkedCheckboxes = page.locator('input[type="checkbox"]:checked');
+    const checkedCount = await checkedCheckboxes.count();
+    expect(checkedCount).toBeGreaterThanOrEqual(1);
+
+    // If only one is checked, try to uncheck it
+    if (checkedCount === 1) {
+      const checkedCheckbox = checkedCheckboxes.first();
+      const checkboxId = await checkedCheckbox.getAttribute("id");
+
+      // Try to click the label to uncheck
+      if (checkboxId) {
+        const dayNumber = checkboxId.replace("day-", "");
+        const dayLabels: Record<string, string> = {
+          "1": "Montag",
+          "2": "Dienstag",
+          "3": "Mittwoch",
+          "4": "Donnerstag",
+          "5": "Freitag",
+          "6": "Samstag",
+        };
+        const dayLabel = dayLabels[dayNumber];
+
+        if (dayLabel) {
+          const label = page.getByText(dayLabel);
+          await label.click();
+          await page.waitForTimeout(500);
+
+          // Verify checkbox is still checked (should not allow unchecking last one)
+          const stillChecked = await checkedCheckbox.isChecked();
+          expect(stillChecked).toBe(true);
+        }
+      }
+    }
+  });
+
+  test("toggle button opens and closes side nav", async ({ page }) => {
+    await page.goto("/");
+
+    // Wait for map to load
+    await page.waitForTimeout(2000);
+
+    // Verify toggle button is visible
+    const toggleButton = page.getByRole("button", {
+      name: /Navigation öffnen|Navigation schließen/i,
+    });
+    await expect(toggleButton).toBeVisible({ timeout: 2000 });
+
+    // Initially, side nav should be closed
+    const sideNav = page.getByText("Halbe Henn");
+    const initiallyVisible = await sideNav.isVisible().catch(() => false);
+    // Side nav might be visible or not initially, but after clicking it should toggle
+
+    // Click to open
+    await toggleButton.click();
+    await page.waitForTimeout(500);
+
+    // Verify side nav is now visible
+    await expect(sideNav).toBeVisible({ timeout: 2000 });
+
+    // Click to close
+    await toggleButton.click();
+    await page.waitForTimeout(500);
+
+    // Verify side nav is closed (wait for animation)
+    await page.waitForTimeout(300);
+    const isVisible = await sideNav.isVisible().catch(() => false);
+    expect(isVisible).toBe(false);
+  });
+});

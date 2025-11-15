@@ -56,4 +56,3 @@ describe("StandPopover Data Logic", () => {
     expect(Array.isArray(mockStand.daysOfWeek)).toBe(true);
   });
 });
-
