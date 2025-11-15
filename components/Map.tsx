@@ -6,7 +6,7 @@ import {
   useCallback,
   useMemo,
   memo,
-  type KeyboardEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import Map, { Marker, ViewState } from "react-map-gl/mapbox";
 import type { Stand } from "@/types/stand";
@@ -42,7 +42,7 @@ interface StandMarkerProps {
 const StandMarker = memo(
   ({ stand, isOpen, onOpenChange }: StandMarkerProps) => {
     const handleKeyDown = useCallback(
-      (e: KeyboardEvent) => {
+      (e: ReactKeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           onOpenChange(!isOpen);
@@ -123,7 +123,7 @@ export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
 
   // Handle keyboard navigation for closing popover
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
       if (e.key === "Escape" && openPopoverId) {
         setOpenPopoverId(null);
       }

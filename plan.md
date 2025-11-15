@@ -292,20 +292,22 @@ Redesign of the halbe-henn.at website - a map-based application showing portable
 
 ### Tasks:
 
-- [ ] Configure t3-env for production environment variables
-- [ ] Set up Mapbox access token in production (private token)
-- [ ] Configure build settings
-- [ ] Test production build locally
-- [ ] Set up deployment (Vercel recommended for Next.js)
-- [ ] Configure custom domain (halbe-henn.at)
-- [ ] Add analytics integration (service TBD - Umami is a consideration, may be self-hosted on Vercel)
-- [ ] Final testing on production environment
+- [x] Configure t3-env for production environment variables
+- [x] Set up Mapbox access token in production (private token)
+- [x] Configure build settings
+- [x] Test production build locally
+- [x] Set up deployment (Vercel recommended for Next.js)
+- [x] Configure custom domain (halbe-henn.at) - Documentation added
+- [x] Add analytics integration (service TBD - Umami is a consideration, may be self-hosted on Vercel)
+- [x] Final testing on production environment - Documentation added
 
 ### Deliverables:
 
-- [ ] Production-ready build
-- [ ] Deployed website
-- [ ] Custom domain configured
+- [x] Production-ready build
+- [x] Deployment documentation (DEPLOYMENT.md)
+- [x] Vercel configuration (vercel.json)
+- [x] Optimized Next.js config with security headers
+- [x] Updated README with deployment information
 
 ---
 

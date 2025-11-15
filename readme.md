@@ -106,6 +106,29 @@ The project uses [t3-env](https://env.t3.gg/) for type-safe environment variable
 Required environment variables:
 
 - `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` - Your Mapbox access token
+  - For development: Use a public token
+  - For production: Use a private token with URL restrictions
+
+Create a `.env` file in the root directory:
+
+```bash
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=your_mapbox_token_here
+```
+
+Get your token from [Mapbox](https://account.mapbox.com/access-tokens/).
+
+## Deployment
+
+The application is configured for deployment on Vercel. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+
+### Quick Deploy to Vercel
+
+1. Push your code to GitHub
+2. Import the repository in [Vercel](https://vercel.com)
+3. Set environment variables in Vercel project settings
+4. Deploy
+
+For production deployment with custom domain (halbe-henn.at), follow the complete guide in [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ## License
 
