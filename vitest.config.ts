@@ -7,7 +7,9 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./__tests__/setup.ts"],
-    include: ["**/__tests__/unit/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    include: [
+      "**/__tests__/unit/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+    ],
     exclude: ["**/__tests__/e2e/**"],
   },
   resolve: {
@@ -15,5 +17,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./"),
     },
   },
+  optimizeDeps: {
+    include: ["react-map-gl"],
+  },
 });
-

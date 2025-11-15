@@ -24,7 +24,8 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
+    NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN:
+      process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
   },
   /**
    * Run `build` or `dev` with SKIP_ENV_VALIDATION to skip env validation. This is especially
@@ -37,4 +38,3 @@ export const env = createEnv({
    */
   emptyStringAsUndefined: true,
 });
-

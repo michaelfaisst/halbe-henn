@@ -11,4 +11,3 @@ describe("Smoke Test", () => {
     expect(testString).toContain("World");
   });
 });
-

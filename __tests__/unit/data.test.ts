@@ -172,4 +172,3 @@ describe("formatDaysOfWeek", () => {
     expect(formatDaysOfWeek([1, 1, 3])).toBe("Monday, Monday, Wednesday");
   });
 });
-
