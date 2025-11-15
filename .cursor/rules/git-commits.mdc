@@ -1,0 +1,32 @@
+---
+rule_type: always
+alwaysApply: true
+---
+
+# Git Commit Rules
+
+## Commit Message Format
+
+Use descriptive commit messages following **Conventional Commits** format:
+
+- `feat: description` - for new features
+- `fix: description` - for bug fixes
+- `test: description` - for adding or updating tests
+- `style: description` - for styling changes
+- `refactor: description` - for code refactoring
+- `docs: description` - for documentation changes
+- `chore: description` - for maintenance tasks
+
+## Examples
+
+- `feat: add map component with markers`
+- `feat: implement day filtering in side nav`
+- `fix: correct marker positioning on mobile`
+- `test: add unit tests for filtering logic`
+- `style: update side nav styling for dark mode`
+- `refactor: extract filtering logic to utility function`
+
+## Best Practices
+
+- Commit messages should be clear and descriptive
+- Make atomic commits (one logical change per commit)

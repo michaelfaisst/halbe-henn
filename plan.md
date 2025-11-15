@@ -4,6 +4,13 @@
 
 Redesign of the halbe-henn.at website - a map-based application showing portable food stand locations in Vorarlberg, Austria.
 
+## Language & Branding
+
+- **Website Name**: "Halbe Henn"
+- **Language**: German (Deutsch)
+- All UI text, labels, and user-facing content must be in German
+- The website should be fully localized for German-speaking users in Vorarlberg, Austria
+
 ## Tech Stack
 
 - **Framework**: Next.js (App Router)
@@ -22,29 +29,29 @@ Redesign of the halbe-henn.at website - a map-based application showing portable
 
 ### Tasks:
 
-- [ ] Initialize Next.js project with TypeScript
-- [ ] Set up Bun as package manager
-- [ ] Configure Tailwind CSS
-- [ ] Install and configure shadcn/ui
-- [ ] Set up Git repository with initial commit
-- [ ] Create basic project structure (components, lib, types, data directories)
-- [ ] Set up ESLint and Prettier
-- [ ] Set up t3-env for environment variable management
-- [ ] Set up testing infrastructure:
-  - [ ] Install and configure Vitest for unit tests
-  - [ ] Install and configure Playwright for e2e tests
-  - [ ] Create test configuration files
-  - [ ] Add test scripts to package.json
-- [ ] Write a simple smoke test to verify test setup works
-- [ ] Create basic README with setup instructions
+- [x] Initialize Next.js project with TypeScript
+- [x] Set up Bun as package manager
+- [x] Configure Tailwind CSS
+- [x] Install and configure shadcn/ui
+- [x] Set up Git repository with initial commit
+- [x] Create basic project structure (components, lib, types, data directories)
+- [x] Set up ESLint and Prettier
+- [x] Set up t3-env for environment variable management
+- [x] Set up testing infrastructure:
+  - [x] Install and configure Vitest for unit tests
+  - [x] Install and configure Playwright for e2e tests
+  - [x] Create test configuration files
+  - [x] Add test scripts to package.json
+- [x] Write a simple smoke test to verify test setup works
+- [x] Create basic README with setup instructions
 
 ### Deliverables:
 
-- [ ] Working Next.js app that runs locally
-- [ ] Tailwind and shadcn configured
-- [ ] Testing infrastructure ready (Vitest + Playwright)
-- [ ] Test setup verified with passing smoke test
-- [ ] Clean project structure
+- [x] Working Next.js app that runs locally
+- [x] Tailwind and shadcn configured
+- [x] Testing infrastructure ready (Vitest + Playwright)
+- [x] Test setup verified with passing smoke test
+- [x] Clean project structure
 
 ---
 
@@ -54,29 +61,29 @@ Redesign of the halbe-henn.at website - a map-based application showing portable
 
 ### Tasks:
 
-- [ ] Examine the existing JSON data file structure (locations.json)
-- [ ] Create TypeScript types/interfaces for:
-  - [ ] Stand location (name, address, coordinates)
-  - [ ] Availability days (array of day numbers 1-6, where 1=Monday, 6=Saturday)
-  - [ ] Complete stand data structure
-- [ ] Create data loading utility function
-- [ ] Create utility functions for:
-  - [ ] Getting current day of week (1-6)
-  - [ ] Formatting day names from numbers
-  - [ ] Validating stand data structure
-- [ ] Write unit tests for:
-  - [ ] Data loading function (loads JSON correctly)
-  - [ ] Type validation (handles invalid data gracefully)
-  - [ ] Day utility functions (current day, day formatting)
-  - [ ] Edge cases (empty data, malformed data)
-- [ ] Verify all tests pass before moving to next phase
+- [x] Examine the existing JSON data file structure (stands.json)
+- [x] Create TypeScript types/interfaces for:
+  - [x] Stand location (name, address, coordinates)
+  - [x] Availability days (array of day numbers 1-6, where 1=Monday, 6=Saturday)
+  - [x] Complete stand data structure
+- [x] Create data loading utility function
+- [x] Create utility functions for:
+  - [x] Getting current day of week (1-6)
+  - [x] Formatting day names from numbers
+  - [x] Validating stand data structure
+- [x] Write unit tests for:
+  - [x] Data loading function (loads JSON correctly)
+  - [x] Type validation (handles invalid data gracefully)
+  - [x] Day utility functions (current day, day formatting)
+  - [x] Edge cases (empty data, malformed data)
+- [x] Verify all tests pass before moving to next phase
 
 ### Deliverables:
 
-- [ ] Type definitions for all data structures
-- [ ] Data loading utility with validation
-- [ ] Day utility functions
-- [ ] Comprehensive unit tests (all passing)
+- [x] Type definitions for all data structures
+- [x] Data loading utility with validation
+- [x] Day utility functions
+- [x] Comprehensive unit tests (all passing)
 
 ---
 
@@ -119,10 +126,10 @@ Redesign of the halbe-henn.at website - a map-based application showing portable
 
 - [ ] Make markers clickable
 - [ ] Create Tooltip/Popover component using shadcn
-- [ ] Display stand information in popover:
+- [ ] Display stand information in popover (all text in German):
   - [ ] Supermarket name
   - [ ] Address
-  - [ ] Available days (formatted nicely, e.g., "Monday, Wednesday, Friday")
+  - [ ] Available days (formatted nicely in German, e.g., "Montag, Mittwoch, Freitag")
 - [ ] Position popover relative to marker
 - [ ] Handle popover open/close state
 - [ ] Add animations/transitions for smooth UX
@@ -159,6 +166,7 @@ Redesign of the halbe-henn.at website - a map-based application showing portable
   - [ ] Filter stands by selected days
   - [ ] Handle multiple day selection
   - [ ] Return filtered stand list
+- [ ] Ensure all UI text is in German (day names, labels, etc.)
 - [ ] Add filtering logic to show/hide markers based on selected days
 - [ ] Update map markers when filter changes
 - [ ] Add image and text content to side nav (from original site) - **See Open Questions**
@@ -337,31 +345,26 @@ halbe-henn/
 Please provide answers to these questions so we can proceed:
 
 1. **Map Library Choice**: ✅ **DECIDED: Mapbox**
-
    - [ ] Leaflet (free, open-source, recommended for simplicity and cost)
    - [x] Mapbox (better styling, requires API key)
    - [ ] Google Maps (familiar, requires API key and billing)
    - **Your preference:** **Mapbox** (using t3-env for environment variables - public token for dev, private for production)
 
 2. **Marker Clustering**: ✅ **DECIDED: No clustering needed**
-
    - Do you want marker clustering when many stands are close together?
    - **Your preference:** [ ] Yes [x] No
 
 3. **Side Navigation Content**:
-
    - What image should be displayed in the side nav? (Please provide the image file or URL)
    - What text content should be included? (Please provide the text or reference to original site)
    - **Your input:** **\*\***\_\_\_\_**\*\***
 
 4. **Analytics**: ✅ **DECIDED: Yes, but service TBD**
-
    - Do you want to add analytics (e.g., Google Analytics, Plausible)?
    - **Your preference:** [x] Yes [ ] No
    - If yes, which service? **Umami (self-hosted, possibly on Vercel) - decision to be made later**
 
 5. **Design Preferences**: ✅ **DECIDED**
-
    - Any specific color scheme preferences beyond the default shadcn theme?
    - **Color scheme:** Simple elegant black and white (default shadcn theme)
    - Any specific layout preferences for the side nav (left/right side, width, etc.)?
@@ -377,6 +380,8 @@ Please provide answers to these questions so we can proceed:
 4. **Environment Variables**: Using t3-env for type-safe environment variable management
 5. **Analytics**: Yes, will be added - service TBD (Umami self-hosted on Vercel is a consideration)
 6. **Design**: Simple elegant black and white color scheme (default shadcn theme), side nav on right side (width TBD)
+7. **Language**: German (Deutsch) - All UI text, labels, and user-facing content must be in German. Day names will be: Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag
+8. **Website Name**: "Halbe Henn"
 
 ---
 

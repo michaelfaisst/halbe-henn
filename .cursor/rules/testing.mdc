@@ -1,0 +1,18 @@
+---
+rule_type: always
+alwaysApply: true
+---
+
+# Testing Rules
+
+## Running Tests
+
+- **Unit Tests**: Use `bun test` or `bun test __tests__/unit` to run unit tests (Vitest)
+- **E2E Tests**: Use `bun test:e2e` to run end-to-end tests (Playwright)
+- **All Tests**: Use `bun test` for unit tests only. E2E tests must be run separately with `bun test:e2e`
+
+## Test Workflow
+
+- Always run tests before committing code changes
+- Write tests alongside features as specified in the project plan
+- Test files should be in `__tests__/unit/` for unit tests and `__tests__/e2e/` for e2e tests

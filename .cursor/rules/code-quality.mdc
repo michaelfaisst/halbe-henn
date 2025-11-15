@@ -1,0 +1,18 @@
+---
+rule_type: always
+alwaysApply: true
+---
+
+# Code Quality Standards
+
+## Pre-commit Checks
+
+- Run linter before committing: `bun lint`
+- Format code before committing: `bun format`
+- Ensure all tests pass before moving to next phase
+
+## Code Standards
+
+- Follow TypeScript strict mode guidelines
+- Use meaningful variable and function names
+- Whenever possible use arrow functions

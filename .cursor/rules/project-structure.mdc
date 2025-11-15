@@ -1,0 +1,17 @@
+---
+rule_type: always
+alwaysApply: true
+---
+
+# Project Structure
+
+## Directory Organization
+
+- TypeScript types go in `types/` directory
+- Utility functions go in `lib/` directory
+- Components go in `components/` directory
+- Data files go in `data/` directory
+
+## Path Aliases
+
+- Use path aliases: `@/` refers to project root
