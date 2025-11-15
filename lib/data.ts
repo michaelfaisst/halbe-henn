@@ -150,3 +150,24 @@ export const formatDaysOfWeek = (days: DayOfWeek[]): string => {
 
   return sortedDays.map(formatDayName).join(", ");
 };
+
+/**
+ * Calculates the center point (centroid) of all stand locations
+ * @param stands - Array of stands
+ * @returns Center coordinates, or default Vorarlberg center if no stands
+ */
+export const getStandsCenter = (stands: Stand[]): Coordinates => {
+  if (stands.length === 0) {
+    // Default to Vorarlberg center if no stands
+    return { lat: 47.225204, lng: 9.973051 };
+  }
+
+  // Calculate average of all coordinates
+  const sumLat = stands.reduce((sum, stand) => sum + stand.coordinates.lat, 0);
+  const sumLng = stands.reduce((sum, stand) => sum + stand.coordinates.lng, 0);
+
+  return {
+    lat: sumLat / stands.length,
+    lng: sumLng / stands.length,
+  };
+};

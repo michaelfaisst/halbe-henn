@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import dynamic from "next/dynamic";
 import { Drumstick } from "lucide-react";
 import { SideNav } from "@/components/SideNav";
-import { loadStands } from "@/lib/data";
+import { loadStands, getStandsCenter } from "@/lib/data";
 import { filterStandsByDays, getDefaultSelectedDays } from "@/lib/filters";
 import { getCurrentDayOfWeek } from "@/lib/data";
 import { Spinner } from "@/components/ui/spinner";
@@ -34,12 +34,19 @@ export default function Home() {
     getDefaultSelectedDays(getCurrentDayOfWeek)
   );
   const [filteredStands, setFilteredStands] = useState<Stand[]>([]);
+  const [mapCenter, setMapCenter] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   // Load stands on mount
   useEffect(() => {
     try {
       const stands = loadStands();
       setAllStands(stands);
+      // Calculate center from all stands
+      const center = getStandsCenter(stands);
+      setMapCenter(center);
     } catch (error) {
       console.error("Failed to load stands:", error);
     }
@@ -76,7 +83,7 @@ export default function Home() {
           </div>
         }
       >
-        <MapComponent stands={filteredStands} />
+        <MapComponent stands={filteredStands} center={mapCenter} />
       </Suspense>
       <SideNav selectedDays={selectedDays} onDaysChange={setSelectedDays} />
     </main>

@@ -4,8 +4,9 @@ import {
   getCurrentDayOfWeek,
   formatDayName,
   formatDaysOfWeek,
+  getStandsCenter,
 } from "@/lib/data";
-import type { DayOfWeek } from "@/types/stand";
+import type { DayOfWeek, Stand } from "@/types/stand";
 
 describe("loadStands", () => {
   it("should load stands data correctly", () => {
@@ -170,5 +171,66 @@ describe("formatDaysOfWeek", () => {
   it("should handle duplicate days (if they exist)", () => {
     // This shouldn't happen in practice, but test the behavior
     expect(formatDaysOfWeek([1, 1, 3])).toBe("Montag, Montag, Mittwoch");
+  });
+});
+
+describe("getStandsCenter", () => {
+  it("should calculate center from multiple stands", () => {
+    const stands: Stand[] = [
+      {
+        name: "Stand 1",
+        address: "Address 1",
+        coordinates: { lat: 47.0, lng: 9.0 },
+        daysOfWeek: [1],
+      },
+      {
+        name: "Stand 2",
+        address: "Address 2",
+        coordinates: { lat: 47.2, lng: 9.2 },
+        daysOfWeek: [2],
+      },
+      {
+        name: "Stand 3",
+        address: "Address 3",
+        coordinates: { lat: 47.4, lng: 9.4 },
+        daysOfWeek: [3],
+      },
+    ];
+
+    const center = getStandsCenter(stands);
+    expect(center.lat).toBeCloseTo(47.2, 5);
+    expect(center.lng).toBeCloseTo(9.2, 5);
+  });
+
+  it("should return the stand coordinates for a single stand", () => {
+    const stands: Stand[] = [
+      {
+        name: "Stand 1",
+        address: "Address 1",
+        coordinates: { lat: 47.5, lng: 9.5 },
+        daysOfWeek: [1],
+      },
+    ];
+
+    const center = getStandsCenter(stands);
+    expect(center.lat).toBe(47.5);
+    expect(center.lng).toBe(9.5);
+  });
+
+  it("should return default center for empty array", () => {
+    const center = getStandsCenter([]);
+    expect(center.lat).toBe(47.225204);
+    expect(center.lng).toBe(9.973051);
+  });
+
+  it("should calculate center from actual loaded stands", () => {
+    const stands = loadStands();
+    const center = getStandsCenter(stands);
+
+    // Verify center is within reasonable bounds for Vorarlberg
+    expect(center.lat).toBeGreaterThan(47);
+    expect(center.lat).toBeLessThan(48);
+    expect(center.lng).toBeGreaterThan(9);
+    expect(center.lng).toBeLessThan(10);
   });
 });

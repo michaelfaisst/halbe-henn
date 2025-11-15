@@ -19,10 +19,10 @@ import { useTheme } from "next-themes";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 /**
- * Vorarlberg region bounds for initial map view
- * Calculated from actual stand coordinates to center the region properly
+ * Default Vorarlberg region bounds for initial map view
+ * Used as fallback when center is not provided
  */
-const VORARLBERG_BOUNDS = {
+const DEFAULT_BOUNDS = {
   latitude: 47.225204,
   longitude: 9.973051,
   zoom: 9,
@@ -30,6 +30,7 @@ const VORARLBERG_BOUNDS = {
 
 interface MapComponentProps {
   stands?: Stand[];
+  center?: { lat: number; lng: number } | null;
 }
 
 // Memoized marker component for performance
@@ -83,16 +84,32 @@ const StandMarker = memo(
 
 StandMarker.displayName = "StandMarker";
 
-export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
+export const MapComponent = ({
+  stands: propsStands,
+  center,
+}: MapComponentProps) => {
   const { theme } = useTheme();
   const [stands, setStands] = useState<Stand[]>(propsStands ?? []);
-  const [viewState, setViewState] = useState<ViewState>({
-    latitude: VORARLBERG_BOUNDS.latitude,
-    longitude: VORARLBERG_BOUNDS.longitude,
-    zoom: VORARLBERG_BOUNDS.zoom,
-    bearing: 0,
-    pitch: 0,
-    padding: { top: 0, bottom: 0, left: 0, right: 0 },
+  const [viewState, setViewState] = useState<ViewState>(() => {
+    // Use provided center, or fall back to default
+    if (center) {
+      return {
+        latitude: center.lat,
+        longitude: center.lng,
+        zoom: DEFAULT_BOUNDS.zoom,
+        bearing: 0,
+        pitch: 0,
+        padding: { top: 0, bottom: 0, left: 0, right: 0 },
+      };
+    }
+    return {
+      latitude: DEFAULT_BOUNDS.latitude,
+      longitude: DEFAULT_BOUNDS.longitude,
+      zoom: DEFAULT_BOUNDS.zoom,
+      bearing: 0,
+      pitch: 0,
+      padding: { top: 0, bottom: 0, left: 0, right: 0 },
+    };
   });
   const [isLoading, setIsLoading] = useState(true);
   const [openPopoverId, setOpenPopoverId] = useState<string | null>(null);
@@ -113,6 +130,17 @@ export const MapComponent = ({ stands: propsStands }: MapComponentProps) => {
       setIsLoading(false);
     }
   }, [propsStands]);
+
+  // Update viewState when center prop changes
+  useEffect(() => {
+    if (center) {
+      setViewState((prev) => ({
+        ...prev,
+        latitude: center.lat,
+        longitude: center.lng,
+      }));
+    }
+  }, [center]);
 
   // Update stands when propsStands changes
   useEffect(() => {
