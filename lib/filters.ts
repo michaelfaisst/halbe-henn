@@ -24,12 +24,20 @@ export const filterStandsByDays = (
 
 /**
  * Gets the default selected days (current day of week)
+ * If today is Sunday, returns an empty array (no days selected)
  * @param getCurrentDay - Function that returns current day (for testing)
- * @returns Array with current day of week
+ * @param getRawDay - Optional function that returns raw day (0-6) for testing, defaults to Date.getDay()
+ * @returns Array with current day of week, or empty array if Sunday
  */
 export const getDefaultSelectedDays = (
-  getCurrentDay: () => DayOfWeek
+  getCurrentDay: () => DayOfWeek,
+  getRawDay: () => number = () => new Date().getDay()
 ): DayOfWeek[] => {
+  // Check if today is Sunday (0) - if so, return empty array
+  const rawDay = getRawDay();
+  if (rawDay === 0) {
+    return [];
+  }
   const currentDay = getCurrentDay();
   return [currentDay];
 };

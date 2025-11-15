@@ -104,29 +104,41 @@ describe("filterStandsByDays", () => {
 describe("getDefaultSelectedDays", () => {
   it("should return array with current day when getCurrentDay returns 1 (Monday)", () => {
     const mockGetCurrentDay = () => 1 as DayOfWeek;
-    const result = getDefaultSelectedDays(mockGetCurrentDay);
+    const mockGetRawDay = () => 1; // Monday (not Sunday)
+    const result = getDefaultSelectedDays(mockGetCurrentDay, mockGetRawDay);
 
     expect(result).toEqual([1]);
   });
 
   it("should return array with current day when getCurrentDay returns 3 (Wednesday)", () => {
     const mockGetCurrentDay = () => 3 as DayOfWeek;
-    const result = getDefaultSelectedDays(mockGetCurrentDay);
+    const mockGetRawDay = () => 3; // Wednesday (not Sunday)
+    const result = getDefaultSelectedDays(mockGetCurrentDay, mockGetRawDay);
 
     expect(result).toEqual([3]);
   });
 
   it("should return array with current day when getCurrentDay returns 6 (Saturday)", () => {
     const mockGetCurrentDay = () => 6 as DayOfWeek;
-    const result = getDefaultSelectedDays(mockGetCurrentDay);
+    const mockGetRawDay = () => 6; // Saturday (not Sunday)
+    const result = getDefaultSelectedDays(mockGetCurrentDay, mockGetRawDay);
 
     expect(result).toEqual([6]);
   });
 
-  it("should return array with single day for any valid day", () => {
+  it("should return empty array when today is Sunday", () => {
+    const mockGetCurrentDay = () => 6 as DayOfWeek;
+    const mockGetRawDay = () => 0; // Sunday
+    const result = getDefaultSelectedDays(mockGetCurrentDay, mockGetRawDay);
+
+    expect(result).toEqual([]);
+  });
+
+  it("should return array with single day for any valid day (not Sunday)", () => {
     for (let day = 1; day <= 6; day++) {
       const mockGetCurrentDay = () => day as DayOfWeek;
-      const result = getDefaultSelectedDays(mockGetCurrentDay);
+      const mockGetRawDay = () => day; // Same as day for non-Sunday days
+      const result = getDefaultSelectedDays(mockGetCurrentDay, mockGetRawDay);
 
       expect(result).toHaveLength(1);
       expect(result[0]).toBe(day);
