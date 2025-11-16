@@ -14,6 +14,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { APP_VERSION } from "@/lib/version";
 
 interface SideNavProps {
   selectedDays: DayOfWeek[];
@@ -237,18 +238,24 @@ export const SideNav = ({ selectedDays, onDaysChange }: SideNavProps) => {
                 </div>
               </div>
 
-              {/* Divider */}
-              <div className="-mx-4 my-4 border-t border-border sm:-mx-6 sm:my-6" />
+                {/* Divider */}
+                <div className="-mx-4 my-4 border-t border-border sm:-mx-6 sm:my-6" />
 
-              {/* Impressum Link */}
-              <div className="flex items-center">
-                <button
-                  onClick={handleImpressumClick}
-                  className="text-sm text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                >
-                  Impressum
-                </button>
-              </div>
+                {/* Impressum Link & Version */}
+                <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+                  <button
+                    onClick={handleImpressumClick}
+                    className="text-sm text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                  >
+                    Impressum
+                  </button>
+                  <span
+                    className="text-xs uppercase tracking-wide text-muted-foreground"
+                    aria-label={`Version ${APP_VERSION}`}
+                  >
+                    Version {APP_VERSION}
+                  </span>
+                </div>
             </motion.div>
           </>
         )}
