@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Run linter
-        run: bun lint
+        run: bun run lint
 
   format-check:
     name: Format Check
@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Check formatting
-        run: bun format:check
+        run: bun run format:check
 
   unit-tests:
     name: Unit Tests
@@ -44,7 +44,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Run unit tests with coverage
-        run: bun test __tests__/unit --coverage --run
+        run: bun run test:unit
         env:
           SKIP_ENV_VALIDATION: true
           NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: test-token
@@ -69,7 +69,7 @@ jobs:
       - name: Install Playwright browsers
         run: bunx playwright install --with-deps
       - name: Run E2E tests
-        run: bun test:e2e
+        run: bun run test:e2e
         env:
           SKIP_ENV_VALIDATION: true
           NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: test-token
@@ -92,7 +92,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Build application
-        run: bun build
+        run: bun run build
         env:
           SKIP_ENV_VALIDATION: true
           NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN: test-token
