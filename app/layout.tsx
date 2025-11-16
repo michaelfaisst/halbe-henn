@@ -120,11 +120,14 @@ export default function RootLayout({
         >
           <ErrorBoundary>{children}</ErrorBoundary>
         </ThemeProvider>
-        <Script
-          src="/umami/script.js"
-          data-website-id="4461bd62-66a1-4cd2-94bf-3ddfdb1e0a14"
-          strategy="afterInteractive"
-        />
+        {process.env.NODE_ENV === "production" &&
+          process.env.VERCEL_ENV === "production" && (
+            <Script
+              src="/umami/script.js"
+              data-website-id="4461bd62-66a1-4cd2-94bf-3ddfdb1e0a14"
+              strategy="afterInteractive"
+            />
+          )}
       </body>
     </html>
   );
