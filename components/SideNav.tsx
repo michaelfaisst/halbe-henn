@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Drumstick, AlertTriangle } from "lucide-react";
+import { Menu, X, Drumstick, AlertTriangle, Heart, Mail, Globe, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { DayOfWeek } from "@/types/stand";
 import { formatDayName } from "@/lib/data";
@@ -261,24 +261,49 @@ export const SideNav = ({ selectedDays, onDaysChange }: SideNavProps) => {
         )}
       </AnimatePresence>
 
-      {/* Impressum Dialog */}
-      <Dialog open={isImpressumOpen} onOpenChange={setIsImpressumOpen}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Impressum</DialogTitle>
-            <DialogDescription>Angaben gemäß § 5 TMG</DialogDescription>
-          </DialogHeader>
-          <div className="mt-4 space-y-2 text-sm">
-            <p>
-              <strong>Halbe Henn</strong>
-            </p>
-            <p>Standorte in Vorarlberg</p>
-            <p className="mt-4 text-xs text-gray-500">
-              Weitere Informationen folgen in Kürze.
-            </p>
-          </div>
-        </DialogContent>
-      </Dialog>
+        {/* Impressum Dialog */}
+        <Dialog open={isImpressumOpen} onOpenChange={setIsImpressumOpen}>
+          <DialogContent className="max-w-md space-y-4">
+            <DialogHeader>
+              <DialogTitle>Impressum</DialogTitle>
+              <DialogDescription>Angaben gemäß § 5 TMG</DialogDescription>
+            </DialogHeader>
+            <section className="rounded-xl border border-border bg-secondary/30 p-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2 text-foreground">
+                <Heart className="h-4 w-4 text-[#ec407a]" aria-hidden="true" />
+                <span className="text-xs font-semibold uppercase tracking-wider">
+                  Made with love by
+                </span>
+              </div>
+              <div className="mt-3 space-y-2 text-base text-foreground">
+                <p className="font-semibold">Michael Faißt</p>
+                <a
+                  href="mailto:michael@faisst.io"
+                  className="flex items-center gap-2 text-sm text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
+                >
+                  <Mail className="h-4 w-4" aria-hidden="true" />
+                  michael@faisst.io
+                </a>
+                <a
+                  href="https://michael.faisst.io"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="flex items-center gap-2 text-sm text-blue-600 underline-offset-4 hover:underline dark:text-blue-400"
+                >
+                  <Globe className="h-4 w-4" aria-hidden="true" />
+                  michael.faisst.io
+                </a>
+              </div>
+            </section>
+            <section className="flex gap-3 rounded-xl border border-dashed border-border/60 bg-muted/40 p-4 text-sm leading-relaxed text-muted-foreground">
+              <Info className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              <p>
+                Diese Website ist ein privates Spaßprojekt ohne Werbung, Gewinnabsicht
+                oder geschäftlichen Zweck.
+              </p>
+            </section>
+          </DialogContent>
+        </Dialog>
     </>
   );
 };
