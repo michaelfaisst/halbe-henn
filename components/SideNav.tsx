@@ -267,53 +267,53 @@ export const SideNav = ({ selectedDays, onDaysChange }: SideNavProps) => {
             </motion.div>
           </>
         )}
-        </AnimatePresence>
+      </AnimatePresence>
 
-        {/* Impressum Dialog */}
-        <Dialog open={isImpressumOpen} onOpenChange={setIsImpressumOpen}>
-          <DialogContent className="max-w-md space-y-4 rounded-lg w-[calc(100vw-2rem)] sm:w-full">
-            <DialogHeader>
-              <DialogTitle>Impressum</DialogTitle>
-            </DialogHeader>
-            <section className="rounded-xl border border-border bg-secondary/30 p-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2 text-foreground">
-                <Heart className="h-4 w-4 text-[#ec407a]" aria-hidden="true" />
-                <span className="text-xs font-semibold uppercase tracking-wider">
-                  Made with love by
-                </span>
-              </div>
-              <div className="mt-3 space-y-2 text-base text-foreground">
-                <p className="font-semibold">Michael Faißt</p>
-                <a
-                  href="mailto:michael@faisst.io"
-                  className="flex items-center gap-2 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
-                >
-                  <Mail className="h-4 w-4" aria-hidden="true" />
-                  michael@faisst.io
-                </a>
-                <a
-                  href="https://michael.faisst.io"
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="flex items-center gap-2 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
-                >
-                  <Globe className="h-4 w-4" aria-hidden="true" />
-                  michael.faisst.io
-                </a>
-              </div>
-            </section>
-            <section className="flex gap-3 rounded-xl border border-dashed border-border/60 bg-muted/40 p-4 text-sm leading-relaxed text-muted-foreground">
-              <Info
-                className="h-5 w-5 text-muted-foreground"
-                aria-hidden="true"
-              />
-              <p>
-                Diese Website ist ein privates Spaßprojekt ohne Werbung,
-                Gewinnabsicht oder geschäftlichen Zweck.
-              </p>
-            </section>
-          </DialogContent>
-        </Dialog>
+      {/* Impressum Dialog */}
+      <Dialog open={isImpressumOpen} onOpenChange={setIsImpressumOpen}>
+        <DialogContent className="w-[calc(100vw-2rem)] max-w-md space-y-4 rounded-lg sm:w-full">
+          <DialogHeader>
+            <DialogTitle>Impressum</DialogTitle>
+          </DialogHeader>
+          <section className="rounded-xl border border-border bg-secondary/30 p-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-foreground">
+              <Heart className="h-4 w-4 text-[#ec407a]" aria-hidden="true" />
+              <span className="text-xs font-semibold uppercase tracking-wider">
+                Made with love by
+              </span>
+            </div>
+            <div className="mt-3 space-y-2 text-base text-foreground">
+              <p className="font-semibold">Michael Faißt</p>
+              <a
+                href="mailto:michael@faisst.io"
+                className="flex items-center gap-2 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
+              >
+                <Mail className="h-4 w-4" aria-hidden="true" />
+                michael@faisst.io
+              </a>
+              <a
+                href="https://michael.faisst.io"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center gap-2 text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
+              >
+                <Globe className="h-4 w-4" aria-hidden="true" />
+                michael.faisst.io
+              </a>
+            </div>
+          </section>
+          <section className="flex gap-3 rounded-xl border border-dashed border-border/60 bg-muted/40 p-4 text-sm leading-relaxed text-muted-foreground">
+            <Info
+              className="h-5 w-5 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <p>
+              Diese Website ist ein privates Spaßprojekt ohne Werbung,
+              Gewinnabsicht oder geschäftlichen Zweck.
+            </p>
+          </section>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
