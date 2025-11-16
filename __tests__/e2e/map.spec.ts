@@ -1,67 +1,15 @@
-import { test, expect, type Page } from "@playwright/test";
-
-const navToggleButton = (page: Page) =>
-  page.getByRole("button", {
-    name: /Navigation öffnen|Navigation schließen/i,
-  });
-
-const sideNavDialog = (page: Page) => page.locator("#side-nav-dialog");
-
-const sideNavHeading = (page: Page) => page.locator("#side-nav-title");
-
-const sideNavCloseButton = (page: Page) =>
-  page.locator('button[aria-label="Schließen"]');
-
-const markersLocator = (page: Page) =>
-  page.locator('[data-testid="marker"]').or(page.locator(".mapboxgl-marker"));
-
-const getDayCheckbox = (page: Page, dayLabel: string) =>
-  page.getByRole("checkbox", { name: new RegExp(dayLabel, "i") });
-
-const openSideNav = async (page: Page) => {
-  const dialog = sideNavDialog(page);
-  if ((await dialog.count()) > 0) {
-    return dialog;
-  }
-  await expect(navToggleButton(page)).toBeVisible({ timeout: 2000 });
-  await navToggleButton(page).click();
-  await expect(dialog).toBeVisible({ timeout: 2000 });
-  return dialog;
-};
-
-const closeSideNav = async (page: Page) => {
-  const dialog = sideNavDialog(page);
-  if ((await dialog.count()) === 0) {
-    return;
-  }
-  const closeButton = sideNavCloseButton(page);
-  if ((await closeButton.count()) > 0) {
-    await closeButton.click();
-  } else {
-    await navToggleButton(page).click();
-  }
-  await expect(dialog).toHaveCount(0);
-};
-
-const ensureDaySelected = async (page: Page, dayLabel = "Montag") => {
-  await openSideNav(page);
-  const dayCheckbox = page.getByRole("checkbox", {
-    name: new RegExp(dayLabel, "i"),
-  });
-  await expect(dayCheckbox).toBeVisible({ timeout: 2000 });
-  const isChecked = (await dayCheckbox.getAttribute("aria-checked")) === "true";
-  if (!isChecked) {
-    await dayCheckbox.click();
-    await expect(dayCheckbox).toHaveAttribute("aria-checked", "true");
-  }
-  await closeSideNav(page);
-};
-
-const ensureMarkersVisible = async (page: Page) => {
-  const markers = markersLocator(page);
-  await expect(markers.first()).toBeVisible({ timeout: 10000 });
-  return markers;
-};
+import { test, expect } from "@playwright/test";
+import {
+  closeSideNav,
+  ensureDaySelected,
+  ensureMarkersVisible,
+  getDayCheckbox,
+  markersLocator,
+  sideNavCloseButton,
+  navToggleButton,
+  openSideNav,
+  sideNavHeading,
+} from "./helpers";
 
 test.describe("Map Integration", () => {
   test("map loads successfully", async ({ page }) => {
