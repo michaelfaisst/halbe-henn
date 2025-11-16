@@ -6,12 +6,12 @@ const nextConfig: NextConfig = {
   // Optimize for production
   compress: true,
   poweredByHeader: false,
-  // Rewrite for Umami analytics
+  // Rewrite for Umami analytics (following Umami's recommended pattern)
   async rewrites() {
     return [
       {
-        source: "/api/umami/script.js",
-        destination: "https://umami.faisst.io/script.js",
+        source: "/umami/:match*",
+        destination: "https://umami.faisst.io/:match*",
       },
     ];
   },

@@ -121,7 +121,7 @@ export default function RootLayout({
           <ErrorBoundary>{children}</ErrorBoundary>
         </ThemeProvider>
         <Script
-          src="/api/umami/script.js"
+          src="/umami/script.js"
           data-website-id="4461bd62-66a1-4cd2-94bf-3ddfdb1e0a14"
           strategy="afterInteractive"
         />
