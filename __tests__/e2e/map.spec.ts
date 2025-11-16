@@ -1,4 +1,56 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
+
+const navToggleButton = (page: Page) =>
+  page.getByRole("button", {
+    name: /Navigation öffnen|Navigation schließen/i,
+  });
+
+const sideNavDialog = (page: Page) => page.locator("#side-nav-dialog");
+
+const sideNavHeading = (page: Page) => page.locator("#side-nav-title");
+
+const markersLocator = (page: Page) =>
+  page.locator('[data-testid="marker"]').or(page.locator(".mapboxgl-marker"));
+
+const openSideNav = async (page: Page) => {
+  const dialog = sideNavDialog(page);
+  if ((await dialog.count()) > 0) {
+    return dialog;
+  }
+  await expect(navToggleButton(page)).toBeVisible({ timeout: 2000 });
+  await navToggleButton(page).click();
+  await expect(dialog).toBeVisible({ timeout: 2000 });
+  return dialog;
+};
+
+const closeSideNav = async (page: Page) => {
+  const dialog = sideNavDialog(page);
+  if ((await dialog.count()) === 0) {
+    return;
+  }
+  await navToggleButton(page).click();
+  await expect(dialog).toHaveCount(0);
+};
+
+const ensureDaySelected = async (page: Page, dayLabel = "Montag") => {
+  await openSideNav(page);
+  const dayCheckbox = page.getByRole("checkbox", {
+    name: new RegExp(dayLabel, "i"),
+  });
+  await expect(dayCheckbox).toBeVisible({ timeout: 2000 });
+  const isChecked = (await dayCheckbox.getAttribute("aria-checked")) === "true";
+  if (!isChecked) {
+    await dayCheckbox.click();
+    await expect(dayCheckbox).toHaveAttribute("aria-checked", "true");
+  }
+  await closeSideNav(page);
+};
+
+const ensureMarkersVisible = async (page: Page) => {
+  const markers = markersLocator(page);
+  await expect(markers.first()).toBeVisible({ timeout: 10000 });
+  return markers;
+};
 
 test.describe("Map Integration", () => {
   test("map loads successfully", async ({ page }) => {
@@ -13,18 +65,9 @@ test.describe("Map Integration", () => {
 
   test("all markers are visible on the map", async ({ page }) => {
     await page.goto("/");
+    await ensureDaySelected(page);
 
-    // Wait for map to load
-    await page.waitForTimeout(2000);
-
-    // Check for marker elements (red dots)
-    // Markers are rendered as divs with specific classes or data attributes
-    const markers = page
-      .locator('[data-testid="marker"]')
-      .or(page.locator(".mapboxgl-marker"));
-
-    // We should have at least some markers (exact count depends on data)
-    // Using a reasonable minimum - there should be many stands
+    const markers = await ensureMarkersVisible(page);
     const markerCount = await markers.count();
     expect(markerCount).toBeGreaterThan(0);
 
