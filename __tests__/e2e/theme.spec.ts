@@ -1,4 +1,11 @@
 import { test, expect } from "@playwright/test";
+import {
+  ensureDaySelected,
+  ensureMarkersVisible,
+  openSideNav,
+  sideNavHeading,
+  closeSideNav,
+} from "./helpers";
 
 test.describe("Theme Toggle", () => {
   test("theme toggle button is visible and clickable", async ({ page }) => {
@@ -84,9 +91,7 @@ test.describe("Theme Toggle", () => {
 
   test("all components render correctly in both themes", async ({ page }) => {
     await page.goto("/");
-
-    // Wait for page to load
-    await page.waitForTimeout(2000);
+    await ensureDaySelected(page);
 
     // Test light mode
     const htmlElement = page.locator("html");
@@ -104,19 +109,17 @@ test.describe("Theme Toggle", () => {
     }
 
     // Verify components are visible in light mode
-    const mapContainer = page.locator(".mapboxgl-map");
-    await expect(mapContainer.first()).toBeVisible({ timeout: 10000 });
+    const mapContainer = await ensureMarkersVisible(page);
 
     // Open side nav
-    const navToggle = page.getByRole("button", {
-      name: /Navigation öffnen/i,
-    });
-    await navToggle.click();
-    await page.waitForTimeout(500);
+    await openSideNav(page);
 
     // Verify side nav is visible
-    const sideNav = page.getByText("Halbe Henn");
+    const sideNav = sideNavHeading(page);
     await expect(sideNav).toBeVisible({ timeout: 2000 });
+
+    // Close nav before toggling theme to avoid overlay intercepts
+    await closeSideNav(page);
 
     // Switch to dark mode
     const themeToggle = page.getByRole("button", {
@@ -125,16 +128,20 @@ test.describe("Theme Toggle", () => {
     await themeToggle.click();
     await page.waitForTimeout(500);
 
+    await openSideNav(page);
+
     // Verify components are still visible in dark mode
     await expect(mapContainer.first()).toBeVisible({ timeout: 10000 });
     await expect(sideNav).toBeVisible({ timeout: 2000 });
+
+    await closeSideNav(page);
   });
 
   test("map styling adapts to theme", async ({ page }) => {
     await page.goto("/");
 
     // Wait for map to load
-    await page.waitForTimeout(3000);
+    await ensureDaySelected(page);
 
     // Get initial theme
     const htmlElement = page.locator("html");
@@ -203,15 +210,15 @@ test.describe("Theme Toggle", () => {
 
     // Check aria-label reflects current state
     if (initialHasDarkClass) {
-      // In dark mode, should show "zu hellem modus wechseln"
-      await expect(
-        themeToggle.getByLabel(/zu hellem modus wechseln/i)
-      ).toBeVisible({ timeout: 2000 });
+      await expect(themeToggle).toHaveAttribute(
+        "aria-label",
+        /zu hellem modus wechseln/i
+      );
     } else {
-      // In light mode, should show "zu dunklem modus wechseln"
-      await expect(
-        themeToggle.getByLabel(/zu dunklem modus wechseln/i)
-      ).toBeVisible({ timeout: 2000 });
+      await expect(themeToggle).toHaveAttribute(
+        "aria-label",
+        /zu dunklem modus wechseln/i
+      );
     }
 
     // Toggle theme
@@ -224,15 +231,15 @@ test.describe("Theme Toggle", () => {
       .catch(() => false);
 
     if (newHasDarkClass) {
-      // Now in dark mode, should show "zu hellem modus wechseln"
-      await expect(
-        themeToggle.getByLabel(/zu hellem modus wechseln/i)
-      ).toBeVisible({ timeout: 2000 });
+      await expect(themeToggle).toHaveAttribute(
+        "aria-label",
+        /zu hellem modus wechseln/i
+      );
     } else {
-      // Now in light mode, should show "zu dunklem modus wechseln"
-      await expect(
-        themeToggle.getByLabel(/zu dunklem modus wechseln/i)
-      ).toBeVisible({ timeout: 2000 });
+      await expect(themeToggle).toHaveAttribute(
+        "aria-label",
+        /zu dunklem modus wechseln/i
+      );
     }
   });
 });

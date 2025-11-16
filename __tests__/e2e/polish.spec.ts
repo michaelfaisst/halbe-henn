@@ -1,4 +1,12 @@
 import { test, expect } from "@playwright/test";
+import {
+  ensureDaySelected,
+  ensureMarkersVisible,
+  openSideNav,
+  closeSideNav,
+  sideNavHeading,
+  getDayCheckbox,
+} from "./helpers";
 
 test.describe("Loading States", () => {
   test("loading state appears during map initialization", async ({ page }) => {
@@ -73,33 +81,30 @@ test.describe("Keyboard Navigation", () => {
 
     // Wait for map and markers to load
     await page.waitForTimeout(2000);
+    await ensureDaySelected(page);
 
     // Find a marker
-    const markers = page.locator(".mapboxgl-marker");
-    const markerCount = await markers.count();
+    const markers = await ensureMarkersVisible(page);
+    const markerButtons = page.locator(
+      ".mapboxgl-marker [role='button'][tabindex='0']"
+    );
+    const markerCount = await markerButtons.count();
     expect(markerCount).toBeGreaterThan(0);
 
     // Focus on first marker (need to make it focusable)
     // Markers should be keyboard accessible
-    const firstMarker = markers.first();
-    await firstMarker.focus().catch(() => {
-      // If focus doesn't work directly, try clicking to focus
-      firstMarker.click();
-    });
+    const firstMarkerButton = markerButtons.first();
+    await firstMarkerButton.focus();
 
-    // Press Enter
-    await page.keyboard.press("Enter");
+    // Press Enter on the marker
+    await firstMarkerButton.press("Enter");
     await page.waitForTimeout(500);
 
     // Popover should appear
     const popover = page
       .locator('[role="dialog"]')
       .or(page.locator("[data-radix-popper-content-wrapper]"));
-    const isVisible = await popover
-      .first()
-      .isVisible()
-      .catch(() => false);
-    expect(isVisible).toBe(true);
+    await expect(popover.first()).toBeVisible({ timeout: 2000 });
   });
 
   test("Escape key closes popover", async ({ page }) => {
@@ -107,9 +112,10 @@ test.describe("Keyboard Navigation", () => {
 
     // Wait for map and markers to load
     await page.waitForTimeout(2000);
+    await ensureDaySelected(page);
 
     // Click a marker to open popover
-    const markers = page.locator(".mapboxgl-marker");
+    const markers = await ensureMarkersVisible(page);
     await markers.first().click();
     await page.waitForTimeout(500);
 
@@ -137,24 +143,15 @@ test.describe("Keyboard Navigation", () => {
     // Wait for page to load
     await page.waitForTimeout(2000);
 
-    // Open side nav
-    const toggleButton = page.getByRole("button", {
-      name: /Navigation öffnen/i,
-    });
-    await toggleButton.click();
-    await page.waitForTimeout(500);
-
-    // Verify side nav is open
-    const sideNav = page.getByText("Halbe Henn");
-    await expect(sideNav).toBeVisible({ timeout: 2000 });
+    await openSideNav(page);
+    await expect(sideNavHeading(page)).toBeVisible({ timeout: 2000 });
 
     // Press Escape
     await page.keyboard.press("Escape");
     await page.waitForTimeout(500);
 
     // Side nav should be closed
-    const isVisible = await sideNav.isVisible().catch(() => false);
-    expect(isVisible).toBe(false);
+    await expect(sideNavHeading(page)).toHaveCount(0);
   });
 
   test("keyboard navigation works in side nav filter buttons", async ({
@@ -165,12 +162,7 @@ test.describe("Keyboard Navigation", () => {
     // Wait for page to load
     await page.waitForTimeout(2000);
 
-    // Open side nav
-    const toggleButton = page.getByRole("button", {
-      name: /Navigation öffnen/i,
-    });
-    await toggleButton.click();
-    await page.waitForTimeout(500);
+    await openSideNav(page);
 
     // Find a day filter button
     const montagButton = page.getByRole("checkbox", { name: /Montag/i });
@@ -186,6 +178,7 @@ test.describe("Keyboard Navigation", () => {
     // Button state should have changed
     const isChecked = await montagButton.getAttribute("aria-checked");
     expect(isChecked).toBeTruthy();
+    await closeSideNav(page);
   });
 
   test("Tab key traps focus within side nav dialog when open", async ({
@@ -196,12 +189,7 @@ test.describe("Keyboard Navigation", () => {
     // Wait for page to load
     await page.waitForTimeout(2000);
 
-    // Open side nav
-    const toggleButton = page.getByRole("button", {
-      name: /Navigation öffnen/i,
-    });
-    await toggleButton.click();
-    await page.waitForTimeout(500);
+    await openSideNav(page);
 
     // Find dialog
     const dialog = page.locator('[role="dialog"]');
@@ -220,6 +208,8 @@ test.describe("Keyboard Navigation", () => {
       const isVisible = await focused.isVisible().catch(() => false);
       expect(isVisible).toBe(true);
     }
+
+    await closeSideNav(page);
   });
 });
 
@@ -292,13 +282,13 @@ test.describe("Accessibility", () => {
     });
     await expect(navToggle).toBeVisible({ timeout: 2000 });
 
-    // Open side nav
-    await navToggle.click();
-    await page.waitForTimeout(500);
+    await openSideNav(page);
 
     // Check day filter buttons have aria-labels
     const montagButton = page.getByRole("checkbox", { name: /Montag/i });
     await expect(montagButton).toBeVisible({ timeout: 2000 });
+
+    await closeSideNav(page);
   });
 
   test("map has proper ARIA role and label", async ({ page }) => {
@@ -327,9 +317,10 @@ test.describe("Accessibility", () => {
 
     // Wait for map and markers to load
     await page.waitForTimeout(2000);
+    await ensureDaySelected(page);
 
     // Click a marker to open popover
-    const markers = page.locator(".mapboxgl-marker");
+    const markers = await ensureMarkersVisible(page);
     await markers.first().click();
     await page.waitForTimeout(500);
 
@@ -351,13 +342,7 @@ test.describe("Accessibility", () => {
 
     // Wait for page to load
     await page.waitForTimeout(2000);
-
-    // Open side nav
-    const toggleButton = page.getByRole("button", {
-      name: /Navigation öffnen/i,
-    });
-    await toggleButton.click();
-    await page.waitForTimeout(500);
+    await openSideNav(page);
 
     // Check dialog has proper attributes
     const dialog = page.locator('[role="dialog"]');
@@ -372,6 +357,8 @@ test.describe("Accessibility", () => {
     const dialogWithLabel = page.locator('[role="dialog"][aria-labelledby]');
     const hasLabel = await dialogWithLabel.isVisible().catch(() => false);
     expect(hasLabel).toBe(true);
+
+    await closeSideNav(page);
   });
 
   test("loading state has proper ARIA attributes", async ({ page }) => {
@@ -404,12 +391,7 @@ test.describe("Accessibility", () => {
     // Wait for page to load
     await page.waitForTimeout(2000);
 
-    // Open side nav
-    const toggleButton = page.getByRole("button", {
-      name: /Navigation öffnen/i,
-    });
-    await toggleButton.click();
-    await page.waitForTimeout(500);
+    await openSideNav(page);
 
     // Check day filter buttons have role="checkbox"
     const dayButtons = page.getByRole("checkbox");
@@ -423,6 +405,7 @@ test.describe("Accessibility", () => {
       .then((val) => val !== null)
       .catch(() => false);
     expect(hasAriaChecked).toBe(true);
+    await closeSideNav(page);
   });
 
   test("screen reader can navigate all content", async ({ page }) => {
@@ -440,16 +423,11 @@ test.describe("Accessibility", () => {
     const headingCount = await headings.count();
     expect(headingCount).toBeGreaterThan(0);
 
-    // Open side nav
-    const toggleButton = page.getByRole("button", {
-      name: /Navigation öffnen/i,
-    });
-    await toggleButton.click();
-    await page.waitForTimeout(500);
+    await openSideNav(page);
 
     // Check for heading in side nav
-    const sideNavHeading = page.getByRole("heading", { name: /Halbe Henn/i });
-    await expect(sideNavHeading).toBeVisible({ timeout: 2000 });
+    await expect(sideNavHeading(page)).toBeVisible({ timeout: 2000 });
+    await closeSideNav(page);
   });
 });
 
@@ -459,22 +437,18 @@ test.describe("Smooth Transitions", () => {
 
     // Wait for map to load
     await page.waitForTimeout(2000);
-
-    // Get initial marker count
-    const markers = page.locator(".mapboxgl-marker");
+    await ensureDaySelected(page);
+    const markers = await ensureMarkersVisible(page);
     const initialCount = await markers.count();
 
-    // Open side nav
-    const toggleButton = page.getByRole("button", {
-      name: /Navigation öffnen/i,
-    });
-    await toggleButton.click();
-    await page.waitForTimeout(500);
+    await openSideNav(page);
 
     // Select a different day
-    const dienstagButton = page.getByRole("checkbox", { name: /Dienstag/i });
+    const dienstagButton = getDayCheckbox(page, "Dienstag");
     await dienstagButton.click();
     await page.waitForTimeout(1000); // Wait for animation
+
+    await closeSideNav(page);
 
     // Markers should still be visible (may have changed count)
     const newCount = await markers.count();
@@ -496,22 +470,12 @@ test.describe("Smooth Transitions", () => {
     // Wait for page to load
     await page.waitForTimeout(2000);
 
-    // Open side nav
-    const toggleButton = page.getByRole("button", {
-      name: /Navigation öffnen/i,
-    });
-    await toggleButton.click();
+    await openSideNav(page);
+    await expect(sideNavHeading(page)).toBeVisible({ timeout: 2000 });
 
-    // Side nav should appear smoothly
-    const sideNav = page.getByText("Halbe Henn");
-    await expect(sideNav).toBeVisible({ timeout: 2000 });
-
-    // Close side nav
-    await toggleButton.click();
+    await closeSideNav(page);
     await page.waitForTimeout(500);
 
-    // Side nav should close smoothly
-    const isVisible = await sideNav.isVisible().catch(() => false);
-    expect(isVisible).toBe(false);
+    await expect(sideNavHeading(page)).toHaveCount(0);
   });
 });
