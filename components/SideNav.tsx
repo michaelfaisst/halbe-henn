@@ -267,11 +267,11 @@ export const SideNav = ({ selectedDays, onDaysChange }: SideNavProps) => {
             </motion.div>
           </>
         )}
-      </AnimatePresence>
+        </AnimatePresence>
 
         {/* Impressum Dialog */}
         <Dialog open={isImpressumOpen} onOpenChange={setIsImpressumOpen}>
-          <DialogContent className="max-w-md space-y-4 w-[calc(100vw-2rem)] sm:w-full">
+          <DialogContent className="max-w-md space-y-4 rounded-lg w-[calc(100vw-2rem)] sm:w-full">
             <DialogHeader>
               <DialogTitle>Impressum</DialogTitle>
             </DialogHeader>
